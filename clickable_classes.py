@@ -16,7 +16,8 @@ BLACK = (0,0,0)
 TRANSPARENT = (0,0,0,0)
 
 ADVENTURE_FONT = pygame.font.SysFont('comicsans', 20)
-NEXT_BUTTON = pygame.transform.scale(pygame.image.load('next_button.png'), (70,70)).convert_alpha()
+NEXT_BUTTON = pygame.transform.scale(pygame.image.load('next_button.png'), (220,150)).convert_alpha()
+TEXT_BOX = pygame.transform.scale(pygame.image.load('text_box.png'), (700, 140))
 
 # to help fade between scenes, used by rooms and items, change to what's visible at beginning
 def redraw_window(room, items):
@@ -33,7 +34,7 @@ def fade_in_and_out(width, height, state, room, current_room, next_room):
     
     for alpha in range(255):
         fade.set_alpha(alpha)
-        redraw_window(current_room, current_room.items)
+        redraw_window(current_room, current_room.end_items)
         WIN.blit(fade, (0,0))
         pygame.display.update()
         pygame.time.delay(1)
@@ -43,7 +44,7 @@ def fade_in_and_out(width, height, state, room, current_room, next_room):
                 
     for alpha in range (255): 
         fade.set_alpha(255-alpha)
-        redraw_window(next_room, next_room.items)
+        redraw_window(next_room, next_room.start_items)
         WIN.blit(fade, (0,0))
         pygame.display.update()
         pygame.time.delay(1)
@@ -53,20 +54,48 @@ class Text():
     def __init__(self, text):
         self.text = text
         self.self_vis = False
+        self.position = (145, 500)
+        #self.text_box = Clickable(self, 80, 450, TEXT_BOX)
         
     def draw_text(self):
-        display_text = ADVENTURE_FONT.render(
-                self.text, 1, WHITE)
-        WIN.blit(display_text, (WIDTH/2 - 200, HEIGHT - 100))
-        pygame.display.update()
+        if self.text == "":
+            pass
+        else:
+            #self.text_box.draw()
+            WIN.blit(TEXT_BOX, (120, 470))
+            display_text = ADVENTURE_FONT.render(
+                    self.text, 1, BLACK)
+            WIN.blit(display_text, self.position)
         
+    # for text over multiple lines    
+    def blit_text(self):
+        if self.text == "":
+            pass
+        else:
+            WIN.blit(TEXT_BOX, (120, 470))
+            #self.text_box.draw()
+            words = [word.split(' ') for word in self.text.splitlines()]  # 2D array where each row is a list of words.
+            space = ADVENTURE_FONT.size(' ')[0]  # The width of a space.
+            max_width = 815
+            x, y = self.position
+            for line in words:
+                for word in line:
+                    word_surface = ADVENTURE_FONT.render(word, 1, BLACK)
+                    word_width, word_height = word_surface.get_size()
+                    if x + word_width >= max_width:
+                        x = self.position[0]  # Reset the x.
+                        y += word_height  # Start on new row.
+                    WIN.blit(word_surface, (x, y))
+                    x += word_width + space
+                x = self.position[0]  # Reset the x.
+                y += word_height  # Start on new row.
+           
     def remove_text(self):
-        self.text = ""
-        
+        self.text = "" 
         
 # Parent class for drawing images on screen and checking if they've been clicked
 class Clickable():
-    def __init__(self, room, x, y, image):
+    def __init__(self, room, x, y, image=""):
         self.image = image
         self.rect = self.image.get_rect()
         self.x = x
@@ -77,14 +106,17 @@ class Clickable():
         self.self_vis = True
     
     def draw(self):
-        if self.self_vis == True:
-            WIN.blit(self.image, (self.rect.x, self.rect.y))       
-            pos = pygame.mouse.get_pos()
+        if self.image == "":
+            pass
+        else:
+            if self.self_vis == True:
+                WIN.blit(self.image, (self.rect.x, self.rect.y))       
+                pos = pygame.mouse.get_pos()
             
-            clicked_items = [item for item in self.room.items if item is not self and isinstance(item, DraggableClue) and item.clicked == True]
+                clicked_items = [item for item in self.room.end_items if item is not self and isinstance(item, DraggableClue) and item.clicked == True]
 
-            if self.rect.collidepoint(pos) and pygame.mouse.get_pressed()[0] and len(clicked_items) == 0:
-                self.clicked=True
+                if self.rect.collidepoint(pos) and pygame.mouse.get_pressed()[0] and len(clicked_items) == 0:
+                    self.clicked=True
 
 # item that fades into the room
 class FadeIn(Clickable):
@@ -93,15 +125,26 @@ class FadeIn(Clickable):
         self.show_fader = False
         
     def fade_in(self):
-        for alpha in range(256):
-            self.image.set_alpha(alpha)
-            redraw_window(self.room, self.room.items)
-            WIN.blit(self.image, (self.rect.topleft))
-            pygame.display.update()
-        if alpha == 255:
-            self.show_fader = True
+        if self.image != "":
+            for alpha in range(256):
+                self.image.set_alpha(alpha)
+                redraw_window(self.room, self.room.end_items)
+                WIN.blit(self.image, (self.rect.topleft))
+                pygame.display.update()   
+            if alpha == 255:
+                self.show_fader = True
 
+    def fade_out(self):
+        if self.image != "": 
+            for alpha in range(256):
+                self.image.set_alpha(256-alpha)
+                redraw_window(self.room, self.room.end_items)
+                WIN.blit(self.image, (self.rect.topleft))
+                pygame.display.update()
 
+               
+
+#make the pause accepted in initialisation
 class AudioClue():
     def __init__(self, room, item, sound, pause, second_sound="", third_sound="", func=""):
         self.room = room
@@ -125,7 +168,7 @@ class AudioClue():
             pass
         else:
             self.func()
-        
+    #somehow carry_out_func running twice
     def play_sound(self, topleft):        
         # this will stop the sound playing more than once
         if self.sound != "":
@@ -138,25 +181,27 @@ class AudioClue():
                 
                 else:
                     self.sound.play()
-                    pygame.time.delay(self.pause)
+                    pygame.time.delay(self.pause + 2000)
                     self.second_sound.play()
                     pygame.time.delay(self.second_sound_length + 3000)
+                    #self.carry_out_func() #this is where the issue is! need to make a difference between 
                     #pass a function that can be called once the sound has finished
                     if self.third_sound == "":
                         pass
                     else:
                         # make more generic, or a variable
-                        pygame.time.delay(self.second_sound_length + 9500)
+                        pygame.time.delay(self.second_sound_length + 13500)
                         self.third_sound.play()
                         pygame.time.delay(self.third_sound_length + 3000)
                         self.carry_out_func()
+            
                     
                  
 # Child class, a clickable item that can be collected, final clue before next room
 class CollectableClue(Clickable):
     def __init__(self, room, x, y, image, next_x, next_y):
         super().__init__(room, x, y, image)
-        self.next_room_button = Clickable(room, WIDTH - 100, HEIGHT - 100, NEXT_BUTTON)  
+        self.next_room_button = Clickable(room, WIDTH - 200, HEIGHT - 150, NEXT_BUTTON)  
         self.next_x = next_x
         self.next_y = next_y
         self.room = room
@@ -165,13 +210,13 @@ class CollectableClue(Clickable):
     def collect(self):
         pos = pygame.mouse.get_pos()
         #this will give us which draggables are being clicked so other items don't react when dragged over!
-        clicked_items = [item for item in self.room.items if item is not self and isinstance(item, DraggableClue) and item.clicked == True]
+        clicked_items = [item for item in self.room.end_items if item is not self and isinstance(item, DraggableClue) and item.clicked == True]
 
         #control item locations, put into inventory
-        if self.rect.collidepoint(pos) and pygame.mouse.get_pressed()[0] and len(clicked_items) == 0:
+        if self.rect.collidepoint(pos) and pygame.mouse.get_pressed()[0]:# and len(clicked_items) == 0:
             self.clicked=True
         
-        if self.clicked == True and len(clicked_items) == 0:
+        if self.clicked == True:# and len(clicked_items) == 0:
             self.image = pygame.transform.scale(self.image, (80,60)) #will need to be general?
             self.next_room_button.draw()        
       
@@ -192,7 +237,7 @@ class DraggableClue(Clickable):
 
         pos = pygame.mouse.get_pos()
     
-        clicked_items = [item for item in self.room.items if item is not self and isinstance(item, DraggableClue) and item.clicked == True]
+        clicked_items = [item for item in self.room.end_items if item is not self and isinstance(item, DraggableClue) and item.clicked == True]
         
         if self.clicked == True and len(clicked_items) == 0:
             self.rect.x = pos[0] - self.rect.width/2
@@ -200,13 +245,22 @@ class DraggableClue(Clickable):
 
         if not pygame.mouse.get_pressed()[0]:
             self.clicked = False        
-            
-        if self.rect.colliderect(self.area.rect):
-            self.is_zoom = True
-            if self.func == "":
-                pass
-            else:
-                self.func()    
+        # will need to add other types as we create other rooms
+        vis = False
+        
+        if isinstance(self.area, pygame.Rect):
+            if self.area.collidepoint(pos):
+                    self.clicked = True
+                    vis= not vis
+
+            if vis == True and self.second_image!="":
+                WIN.blit(self.second_image, (150, 20))
+        
+        else:
+            if self.area.rect.collidepoint(pos) and self.clicked ==True:
+                self.clicked = True
+                vis= not vis
+                              
                 
 class ZoomableClue(Clickable):
     def __init__(self, room, x, y, image, toggle_image, second_x, second_y):
@@ -214,6 +268,7 @@ class ZoomableClue(Clickable):
         self.toggle_image = toggle_image
         self.clue_zoom = False
         self.clue_space = self.toggle_image.get_rect()
+        #self.clue_space = self.toggle_image.rect.topleft
         self.second_x = second_x
         self.second_y = second_y
     
