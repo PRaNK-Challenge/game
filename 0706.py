@@ -492,7 +492,7 @@ class Room4():
         if self.bag.image == self.open_bag:
             self.necklace.self_vis = True
             self.necklace.draw()
-            self.multiline_text = Text("This looks like a lady's necklace, could it be that's the one Tom gave to Sara? And on the back there's an address. Why would he try to get rid of it?", "top")
+            self.multiline_text = Text("This looks like a lady's necklace, could it be that's the one Tom gave to Sara? And on the back there's an address. Why would he try to get rid of it, maybe they had a fight?", "top")
             
         if self.necklace.clicked == True:
             self.necklace.collect()
