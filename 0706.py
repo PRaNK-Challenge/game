@@ -17,10 +17,10 @@ FPS = 144
 WHITE = (255, 255, 255)
 BLACK = (0,0,0)
 TRANSPARENT = (0,0,0,0)
-ADVENTURE_FONT = pygame.font.SysFont('comicsans', 20)
+ADVENTURE_FONT = pygame.font.SysFont('arial', 20)
 
 # Files for all rooms
-ADVENTURE_FONT = pygame.font.SysFont('comicsans', 20)
+ADVENTURE_FONT = pygame.font.SysFont('arial', 20)
 NEXT_BUTTON = pygame.transform.scale(pygame.image.load('next_button.png'), (200,150)).convert_alpha()
 TEXT_BOX = pygame.transform.scale(pygame.image.load('text_box.png'), (800, 140))
 
@@ -212,7 +212,7 @@ class Room1():
         self.next_room = False
         self.drawer = pygame.draw.rect(WIN, TRANSPARENT, (320,570,50,50))
         self.collect_folder = CollectableClue(self, 246, 409, FOLDER, 15, HEIGHT - 100)
-        self.text = Text("She seems too upset to speak.                                                      Maybe I should give her some tissues and she'll be able to tell us about the case?", "bottom")
+        self.text = Text("She seems too upset to speak.                                                      Maybe I should give her some tissues and she'll be able to tell us about the case?", "top")
         self.mother = FadeIn(self, 105, 132, MOTHER)
         self.phone = Clickable(self, 620, 290, PHONE)
         self.phone_call = AudioClue(self, self.phone, PHONE_PICKUP, 1000, False, MAN, DOOR_KNOCK, self.mother.fade_in, fourth_sound=CRYING)
@@ -260,7 +260,7 @@ class Room1():
         
         # key is revealed, can be moved
         if self.phone.clicked == True and self.click_tissues.clicked == True:
-            self.text = Text("Oh good, that seems to have helped her. Now we can hear more about the case.                                                                                     And ah! There's the key to the drawer! Let's get those notes.", "top")
+            self.text = Text("Oh good, that seems to have helped her.                                                                                                                          Ah! There's the key to the drawer! Let's get that casefile.", "top")
             self.drag_key.draw()
             if isinstance(self.drag_key, DraggableClue):
                 self.drag_key.click_and_drag()
@@ -280,7 +280,7 @@ class Room1():
             self.collect_folder.collect()
             self.collect_folder.rect.x = self.collect_folder.next_x
             self.collect_folder.rect.y = self.collect_folder.next_y
-            self.text.text = "Let's go and see what clues we can find in her daughter's bedroom..."
+            self.text.text = "Time to go and see what clues we can find in her daughter's bedroom..."
     
         if self.collect_folder.next_room_button.clicked == True:
             self.next_room = True
@@ -294,7 +294,7 @@ class Room2():
         self.note_zoom = ROOM_2_NOTE_ZOOM
         self.diary = CollectableClue(self, 40, 355, ROOM_2_DIARY, 15, HEIGHT - 100)
         self.twinkle = DraggableClue(self, ROOM_2_TWINKLE, 640, 552, True, area=self.diary)
-        self.text = Text("Okay, where should I be looking? Look at that poster, I've heard of magic ink notes! You hold the note over heat and the ink becomes visible! What's that note near the bin?", "bottom")
+        self.text = Text("Okay, where to look first? Hmm, those posters seems quite interesting. Oh! I've heard of magic ink before! You hold the note over heat and the ink becomes visible!", "top")
         self.candle = ZoomableClue(self, 656, 243, ROOM_2_CANDLE, self.note_zoom, 150, 20)
         self.key = ROOM_2_KEY
         self.note = DraggableClue(self, ROOM_2_NOTE, 900, 490, True, area=self.candle)
@@ -331,7 +331,7 @@ class Room2():
         if self.twinkle.clicked == True:
             self.twinkle.image = self.key
             self.twinkle.click_and_drag()
-            self.text = Text("Aha, that looks like a diary key! Let's grab that and her diary and see what we can find out", "top")
+            self.text = Text("Aha, that looks like a diary key! Let's grab it and see what we can find out.", "top")
         
         # take the key to the diary, put both in inventory
         if self.diary.clicked == True:
@@ -377,7 +377,7 @@ class Room3():
         self.card = DraggableClue(self, ROOM_3_CARD, 600, 400, True, area=self.drawer)
         self.start_items = [self.candle, self.people]
         self.end_items = [self.candle, self.people, self.photo, self.card]
-        self.multiline_text = Text("It seems from what she wrote in her diary I should to speak to her friend... Let's see if she'll help", "bottom")
+        self.multiline_text = Text("It seems from what she wrote in her diary her friend might know something... Let's see if she'll help.", "top")
         self.next_room = False
         
     def play_room(self):
@@ -395,7 +395,7 @@ class Room3():
             self.peoplespeak.sound = ""
             
         if self.peoplespeak.sound == "":
-            self.multiline_text = Text("Hmm, well they won't be much help. What did the daughter shove in the drawer just before I came in? It's locked, maybe the key card is around here...", "bottom")
+            self.multiline_text = Text("Hmm, well they won't be much help. What did the daughter shove in the drawer just before I came in? It's locked, maybe the key card is around here...", "top")
          
         # click the candle, it moves to the side - SORT OUT?
         if self.candle.clicked == True and self.peoplespeak.sound == "":
@@ -417,7 +417,7 @@ class Room3():
         
         # click the photo, goes to girl who speaks
         if self.photo.rect.topleft == (self.photo.next_x, self.photo.next_y):
-            self.multiline_text = Text("Are you sure you don't know anything?                                           Who's this boy with you in the photo?                                          And what's that file your father has?", "bottom")
+            self.multiline_text = Text("So are you sure you don't know anything at all?                                 Then who's this boy with you in the photo?                                     And what's that file your father has?", "bottom")
             self.daughterspeak.play_sound(self.daughterspeak.item.rect.topleft)
             self.daughterspeak.sound = ""
             self.file.self_vis = True
@@ -431,7 +431,7 @@ class Room3():
         
         if self.file.rect.topleft == (self.file.next_x, self.file.next_y):
             self.file.collect()
-            self.multiline_text = Text("It seems the father collected information on this boy, Tom, as he was concerned too! Let's see if we can find that boy at that alleyway she mentioned.", "bottom")
+            self.multiline_text = Text("It looks like the father collected information on this boy, Tom, he must have been concerned too! Let's see if we can find that boy at that alleyway Emma mentioned.", "top")
         
         if self.file.next_room_button.clicked == True:
             self.next_room = True
@@ -453,7 +453,7 @@ class Room4():
         self.open_bag = ROOM_4_OPEN_BAG
         self.shine = ROOM_4_SHINE
         self.necklace = CollectableClue(self, 600, 355, ROOM_4_NECKLACE, 15, HEIGHT - 105)
-        self.multiline_text = Text("Well, this boy Tom doesn't seem to be anywhere around here.                          I wonder if this man has seen him...", "bottom")
+        self.multiline_text = Text("Well, Tom doesn't seem to be anywhere around here.                                   I wonder if this man has seen him...", "top")
         self.next_room = False
         self.start_items = [self.drunk, self.bottle, self.bag]
         self.end_items = [self.drunk, self.bottle, self.bag]
@@ -492,13 +492,13 @@ class Room4():
         if self.bag.image == self.open_bag:
             self.necklace.self_vis = True
             self.necklace.draw()
-            self.multiline_text = Text("It looks like a lady's necklace, why did he have it? And on the back there's an address.", "bottom")
+            self.multiline_text = Text("This looks like a lady's necklace, could it be that's the one Tom gave to Sara? And on the back there's an address. Why would he try to get rid of it?", "top")
             
         if self.necklace.clicked == True:
             self.necklace.collect()
             self.necklace.rect.x = self.necklace.next_x
             self.necklace.rect.y = self.necklace.next_y
-            self.multiline_text = Text("Let's go checkout that address and see if we can put some more clues together", "bottom")
+            self.multiline_text = Text("Let's go check out that address and see if he will be there.", "top")
             
         if self.necklace.next_room_button.clicked == True:
             self.next_room = True    
@@ -520,7 +520,7 @@ class Room5():
         self.poster = CollectableClue(self, 350, 5, ROOM_5_NOTE, 25, HEIGHT - 115, size=(55, 80))
         self.lock_space = pygame.draw.rect(WIN, TRANSPARENT, (238,200,30,30))
         self.next_room = False
-        self.multiline_text = Text("Looks like there's no one home. I wonder if they left a key somewhere so I can look around... I just hope no one comes home soon!", "bottom")
+        self.multiline_text = Text("Looks like there's no one home. Nothing wrong with having a little look around though. Might be worth trying to get some clues.", "top")
         self.start_items = [self.key, self.plant, self.lock, self.rock, self.keyhole]
         self.end_items = [self.plant, self.rock, self.keyhole, self.key]
         self.current_items = [self.plant, self.rock, self.keyhole, self.key, self.lock]
@@ -556,7 +556,7 @@ class Room5():
             self.man.fade_out()
         
         if self.man_speak.sound == "":
-            self.multiline_text = Text("Looks like we'll need some way of breaking in to the garage! Maybe try smashing the lock with something...", "top")
+            self.multiline_text = Text("Looks like I'll need some way of breaking in to the garage! That lock doesn't look sturdy, with a little force it should open.", "top")
             if isinstance(self.rock, DraggableClue):
                 self.rock.click_and_drag()
         
@@ -576,7 +576,7 @@ class Room5():
                 self.poster.self_vis = True
         
         if self.poster.self_vis == True:
-            self.multiline_text = Text("Found this poster. Looks like I'll be checking out this club tonight...", "bottom")
+            self.multiline_text = Text("Poster about a club... And today the members are meeting up. Guess I am gonna go clubbing tonight...", "top")
         
         if self.poster.clicked == True:
             self.poster.collect()
@@ -600,7 +600,7 @@ class Room6():
         self.window = Clickable(self, 570, 15, ROOM_6_WINDOW)
         self.window_smash = AudioClue(self, self.drink, ROOM_5_SMASH, 100, True)
         self.bat = DraggableClue(self, ROOM_6_BAT, 470, 230, True, area=self.window)
-        self.text = Text("Those guys look like his friends I saw in the photo in the file her friend's dad had. But they're in the VIP area, how do I get in?", "bottom")
+        self.text = Text("Those guys in the VIP section must be the club members. But how do I get in with this bouncer keeping an eye?", "top")
         self.vip_man_speak = AudioClue(self, self.vip_man, ROOM_6_VIP_MAN_SPEAK, 0, True)
         self.thug_speak = AudioClue(self, self.thugs, ROOM_6_THUG_SPEAK, 0, True)
         self.next_room_button = Clickable(self, WIDTH - 200, HEIGHT - 150, NEXT_BUTTON)
@@ -627,7 +627,7 @@ class Room6():
         if self.vip_man.clicked == True:
             self.vip_man_speak.play_sound((400, 60))
             self.vip_man_speak.sound = ""
-            self.text.text = "OK, looks like I'll have to buy this guy a drink if I want to get into the VIP area."
+            self.text.text = "Ok, guess I will be spending some money tonight..."
             
         # give man drink    
         if self.drink.rect.colliderect(self.vip_man):
@@ -656,7 +656,7 @@ class Room6():
         # remove rope and speak to Tom's gang
         if self.rope.clicked == True and self.vip.rect.topleft == (725,35):
             self.rope.image = ""
-            self.text.text = "Excuse me, I'm looking for this guy, Tom. Have you seen him?"
+            self.text.text = "Excuse me, I'm looking for a guy named Tom. Have you seen him?"
             
         if self.thugs.rect.collidepoint(pos) and pygame.mouse.get_pressed()[0] and self.vip.rect.topleft == (725,35):
             self.thug_speak.play_sound((545, 100))
@@ -668,7 +668,7 @@ class Room6():
 
         #smash the window and leave
         if self.bat.clicked == True:
-            self.text.text = "Uh-oh, looks like I better get out of here!"
+            self.text.text = "Uh-oh, looks like I better get out of here and fast!"
             self.bat.image = ROOM_6_BAT_TURN
         
         if self.bat.rect.colliderect(self.window) and pygame.mouse.get_pressed()[0]:
@@ -680,7 +680,7 @@ class Room6():
             self.window_smash.sound == ""
             
         if self.window.image == ROOM_6_WINDOW_BROKEN:
-            self.text.text = "Uh-oh, looks like I better get out of here!"
+            self.text.text = "Uh-oh, looks like I better get out of here and fast!"
             self.next_room_button.draw()
             
         if self.next_room_button.clicked == True:
@@ -693,8 +693,8 @@ class Room7():
         self.image = ROOM_7_BACKGROUND
         self.necklace_text = Text("Tom gave her a necklace with his address on it, who knows why he'd want her to go there, seems like he had a rough family dynamic.", "bottom")
         self.file_text = Text("Her friend's father was gathering information on Tom which is a bit much, but seems like he didn't actually find a lot to be worried about, he's just a kid.", "bottom")
-        self.photo_text = Text("So, we know she was friends with Tom, who these parents all thought was trouble.", "bottom")
-        self.poster_text = Text("We didn't find him at the club with his gang, but it seems he ran with a rough crowd, I wouldn't trust them, or anyone they hung around with.", "bottom")
+        self.photo_text = Text("So, we know she was friends with Tom, but all the parents thought he was trouble.", "bottom")
+        self.poster_text = Text("We didn't find him at the club with his gang, which could be a good sign. But it seems he ran with a rough crowd, I wouldn't trust them.", "bottom")
         self.diary_text = Text("We know from her diary her mother was overprotective of her and would do anything to keep her away from Tom.", "bottom")
         self.final_text = Text("Now that I'm looking at all of this, I think it's pretty obvious who knows where she is!", "bottom")
         self.necklace = Clickable(self, 590, 380, ROOM_7_NECKLACE)
