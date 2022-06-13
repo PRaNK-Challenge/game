@@ -141,21 +141,23 @@ TRY_AGAIN = pygame.transform.scale(pygame.image.load('tryagain.png'), (800, 200)
 # ROOM 8
 # Room 8 images
 ROOM_8_BACKGROUND = pygame.transform.scale(pygame.image.load('room8.png'), (WIDTH, HEIGHT))
-ROOM_8_PLANK1 = pygame.transform.scale(pygame.image.load('plank18.png'), (250, 170))
-ROOM_8_PLANK2 = pygame.transform.scale(pygame.image.load('plank28.png'), (250, 140))
-ROOM_8_PLANK3 = pygame.transform.scale(pygame.image.load('plank38.png'), (250, 140))
+ROOM_8_PLANK1 = pygame.transform.scale(pygame.image.load('plank18.png'), (210, 140))
+ROOM_8_PLANK2 = pygame.transform.scale(pygame.image.load('plank28.png'), (200, 130))
+ROOM_8_PLANK3 = pygame.transform.scale(pygame.image.load('plank38.png'), (210, 80))
 ROOM_8_STICK1 = pygame.transform.scale(pygame.image.load('stick18.png'), (150, 95))
-ROOM_8_STICK2 = pygame.transform.scale(pygame.image.load('stick28.png'), (150, 150))
-ROOM_8_STICK3 = pygame.transform.scale(pygame.image.load('stick38.png'), (250, 100))
-ROOM_8_KEY = pygame.transform.scale(pygame.image.load('key8.png'), (100, 50))
-ROOM_8_TREE = pygame.transform.scale(pygame.image.load('tree8.png'), (40, 60))
+ROOM_8_STICK2 = pygame.transform.scale(pygame.image.load('stick28.png'), (200, 130))
+ROOM_8_STICK3 = pygame.transform.scale(pygame.image.load('stick38.png'), (150, 30))
+ROOM_8_KEY = pygame.transform.scale(pygame.image.load('key8.png'), (30, 15))
+ROOM_8_TREE = pygame.transform.scale(pygame.image.load('tree8.png'), (10, 20))
 ROOM_8_GRASS1 = pygame.transform.scale(pygame.image.load("grass18.png"), (100,100))
 ROOM_8_GRASS2 = pygame.transform.scale(pygame.image.load("grass28.png"), (100, 100))
-ROOM_8_LOCK = pygame.transform.scale(pygame.image.load('lock8.png'), (25, 25))
+ROOM_8_LOCK = pygame.transform.scale(pygame.image.load('lock8.png'), (15, 25))
+ROOM_8_MOTHER = pygame.transform.scale(pygame.image.load("mother8.png"), (250, 550))
+ROOM_8_DAUGHTER = pygame.transform.scale(pygame.image.load("daughter8.png"), (200, 400))
 # Room 8 sounds
-ROOM_8_UNLOCK = pygame.mixer.Sound('room8_key_lock.mp3')
-ROOM_8_MOTHER = pygame.transform.scale(pygame.image.load("mother8.png"), (25, 25))
-ROOM_8_DAUGHTER = pygame.transform.scale(pygame.image.load("daughter8.png"), (200, 300))
+ROOM_8_KEY_LOCK = pygame.mixer.Sound("room8_key_lock.mp3")
+ROOM_8_GIRL = pygame.mixer.Sound("room8_girl.mp3")
+ROOM_8_MOTHER_SOUND = pygame.mixer.Sound("room8_mother.mp3")
 
 # Ending images
 END = pygame.transform.scale(pygame.image.load('good.png'), (WIDTH, HEIGHT))
@@ -893,13 +895,184 @@ class YouLose():
 
 class Room8:
     def __init__(self):
+        self.image = ROOM_8_BACKGROUND
+        self.plank1 = Clickable(self, 365, 285, ROOM_8_PLANK1)
+        self.plank2 = Clickable(self, 360, 290, ROOM_8_PLANK2)
+        self.plank3 = Clickable(self, 360, 177, ROOM_8_PLANK3)
+        self.stick1 = DraggableClue(self, ROOM_8_STICK1, 380, 503, True, area=self.plank1)
+        self.stick2 = DraggableClue(self, ROOM_8_STICK2, 797, 490, True, area=self.plank2)
+        self.stick3 = DraggableClue(self, ROOM_8_STICK3, 586, 560, True, area=self.plank3)
+        self.lock = Clickable(self, 386, 268, ROOM_8_LOCK)
+        self.key = DraggableClue(self, ROOM_8_KEY, 261, 189, True, area=self.lock)
+        self.tree = Clickable(self, 242, 183, ROOM_8_TREE)
+        self.grass1 = Clickable(self, 630, 530, ROOM_8_GRASS1)
+        self.grass2 = Clickable(self, 380, 540, ROOM_8_GRASS2)
+        self.girl = FadeIn(self, 560, 300, ROOM_8_DAUGHTER)
+        self.mother = FadeIn(self, 700, 20, ROOM_8_MOTHER)
+        self.lock_sound = AudioClue(self, self.lock, ROOM_8_KEY_LOCK, 100, False, func=self.girl.fade_in)
+        self.girl_speak = AudioClue(self, self.girl, ROOM_8_GIRL, 500, False, func=self.mother.fade_in)
+        self.mother_speak = AudioClue(self, self.mother, ROOM_8_GIRL, 500, False)
+        self.text = Text("", "top")
+        self.start_items = [self.plank1, self.plank2, self.plank3, self.stick1, self.stick2, self.stick3, self.lock, self.grass1, self.grass2]
+        self.end_items = []
+        self.current_items = [self.girl, self.tree, self.key] # anything else that should be on screen
+        self.all_items = list(set(self.end_items + self.start_items + self.current_items))
+        self.next_room = False
         self.has_collectable = False
-        pass
-        # Kat to complete
 
     def play_room(self):
-        # Kat to complete
-        pass
+        WIN.blit(self.image, (0, 0))
+        WIN.blit(self.tree.image, (242, 183))
+
+        self.lock.draw()
+        self.plank1.draw()
+        self.plank2.draw()
+        self.plank3.draw()
+        #self.tree.draw()
+        self.grass1.draw()
+        self.grass2.draw()
+        
+        pos = pygame.mouse.get_pos()                    
+        change_cursor(self.all_items, pos)
+
+        # self.stick3.draw()
+
+        self.text.blit_text()
+        self.text.text = "Just like in the report, Sara's mother owns this land, and someone seems to be inside that shed!"
+
+        # stick 1 logic
+        if self.stick1.area.rect.collidepoint(pos) and self.stick1.clicked == True:
+            if (
+                self.stick1.rect.colliderect(self.plank2)
+                and pygame.mouse.get_pressed()[0]
+            ):
+                self.plank2.image = ""
+                self.plank2.self_vis = False
+                self.stick1.draw()
+        if self.plank2.image == "" and self.plank2.self_vis == False:
+            self.text.remove_text()
+
+        self.stick1.draw()
+        self.stick1.click_and_drag()
+
+        # when plank 2 gone stick 1 dissapears
+        if self.plank2.image == "" and self.plank2.self_vis == False:
+            self.stick1.image = ""
+            self.stick1.self_vis = False
+
+        # #when stick 1 dissapears stick 1 reappears as an image - not working... rn the stick is gone
+        # if self.plank2.image == "" and self.plank2.self_vis == False:
+        #     self.stick1.draw()
+        #     # WIN.blit(self.stick1.image, (380, 503))
+
+        # when plank 2 dissapears stick 3 appears
+        if self.plank2.image == "" and self.plank2.self_vis == False:
+            self.stick3.draw()
+            self.stick3.click_and_drag()
+        else:
+            WIN.blit(self.stick3.image, (586, 560))
+
+        # stick 3 logic
+        if self.stick3.area.rect.collidepoint(pos) and self.stick3.clicked == True:
+            if (
+                self.stick3.rect.colliderect(self.plank3)
+                and pygame.mouse.get_pressed()[0]
+            ):
+                self.plank3.image = "" # rect.topleft = (x, y)
+                self.plank3.self_vis = False
+                self.stick3.draw()
+                
+        # self.stick3.draw()
+        # self.stick3.click_and_drag()
+
+        # when plank 3 gone stick 3 dissapears
+        if self.plank3.image == "" and self.plank3.self_vis == False:
+            self.stick3.image = ""
+            self.stick3.self_vis = False
+
+        # if plank 3 gone stick 2 movable
+        if self.plank3.image == "" and self.plank3.self_vis == False:
+            self.stick2.draw()
+            self.stick2.click_and_drag()
+        else:
+            WIN.blit(self.stick2.image, (797, 490))
+
+        # stick 2 logic
+        if self.stick2.area.rect.collidepoint(pos) and self.stick2.clicked == True:
+            if (
+                self.stick2.rect.colliderect(self.plank1)
+                and pygame.mouse.get_pressed()[0]
+            ):
+                self.plank1.image = ""
+                self.plank1.self_vis = False
+                self.stick2.draw()
+
+        # when plank 1 gone stick 2 dissapears
+        if self.plank1.image == "" and self.plank1.self_vis == False:
+            self.stick2.image = ""
+            self.stick2.self_vis = False
+
+        # self.stick2.draw()
+        # self.stick2.click_and_drag()
+
+
+        if (
+            self.plank1.image == "" and self.plank1.self_vis == False
+        ):  # logic so they can't click if the planks' images aren't ""
+            self.tree.draw()
+            if self.tree.clicked == True:
+                self.key.draw()  # key is draw when the tree is clicked before the planks are gone
+                self.key.click_and_drag()
+
+
+        if self.key.rect.colliderect(self.lock) and pygame.mouse.get_pressed()[0]:
+            self.lock.image = ""
+            self.lock.self_vis = False
+            self.key.image = ""
+            self.lock_sound.play_sound((386, 268))
+            self.lock_sound == ""
+            self.lock.rect.topleft = (0,0)
+            
+        if self.girl.show_fader == True:
+            WIN.blit(self.girl.image, (560, 300))
+            self.girl_speak.play_sound((560, 300))
+            self.girl_speak.sound = ""
+            
+        if self.mother.show_fader == True:
+            WIN.blit(self.mother.image, (700, 20))
+            self.mother_speak.play_sound((560, 300))
+            self.mother_speak.sound = ""
+            
+            # self.key.self_vis = False
+            # self.girl_speak.play_sound((585, 200))
+            # self.girl_speak.sound = ""
+            # self.girl.fade_in
+
+
+
+        # if (
+        #     self.key.self_vis == False
+        #     and self.key.image == ""
+        #     and self.lock.self_vis == False
+        #     and self.lock.image == ""
+        # ):
+            # self.lock_sound.play_sound((585, 200))
+            # self.lock_sound.sound = ""
+            # self.girl.fade_in
+            # self.girl_speak.play_sound(self.girl.rect.topleft)
+            # self.girl_speak.sound = ""
+            # pygame.time.delay(5000)
+            # self.girl.image == ""
+            # self.girl.self_vis = False
+            # self.girl.fade_out
+
+
+
+        # when the mother stops talking the sticks need to be placed together
+
+        # after mother fades out/disapears last text box appears and then the end
+
+        pygame.display.update()
 
 class End():
     def __init__(self):
@@ -934,7 +1107,7 @@ end = End()
 class GameState():
     
     def __init__(self):
-        self.state = 'room5'
+        self.state = 'room8'
         
     def menu(self):
         menu.start_screen()
