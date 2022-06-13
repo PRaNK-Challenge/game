@@ -156,8 +156,8 @@ ROOM_8_MOTHER = pygame.transform.scale(pygame.image.load("mother8.png"), (250, 5
 ROOM_8_DAUGHTER = pygame.transform.scale(pygame.image.load("daughter8.png"), (200, 400))
 # Room 8 sounds
 ROOM_8_KEY_LOCK = pygame.mixer.Sound("room8_key_lock.mp3")
-ROOM_8_GIRL = pygame.mixer.Sound("room8_girl.mp3")
-ROOM_8_MOTHER_SOUND = pygame.mixer.Sound("room8_mother.mp3")
+ROOM_8_GIRL_SPEAK = pygame.mixer.Sound("room8_girl.mp3")
+ROOM_8_MOTHER_SPEAK = pygame.mixer.Sound("room8_mother.mp3")
 
 # Ending images
 END = pygame.transform.scale(pygame.image.load('good.png'), (WIDTH, HEIGHT))
@@ -642,6 +642,7 @@ class Room6():
         self.window_smash = AudioClue(self, self.drink, ROOM_5_SMASH, 100, True)
         self.bat_click = Clickable(self, 470, 230, ROOM_6_BAT)
         self.bat = DraggableClue(self, ROOM_6_BAT, 470, 230, True, area=self.window)
+        self.bat_end = Clickable(self, 470, 230, ROOM_6_BAT)
         self.text = Text("Those guys look like his friends I saw in the photo in the file her friend's dad had. But they're in the VIP area, how do I get in?", "bottom")
         self.vip_man_speak = AudioClue(self, self.vip_man, ROOM_6_VIP_MAN_SPEAK, 0, True)
         self.thug_speak = AudioClue(self, self.thugs, ROOM_6_THUG_SPEAK, 0, True)
@@ -649,7 +650,7 @@ class Room6():
         self.has_collectable = False
         self.next_room = False
         self.start_items =[self.vip_man, self.thugs, self.rope, self.bouncer, self.drink, self.window, self.bat]
-        self.end_items =[self.vip_man, self.window, self.thugs, self.bat, self.next_room_button]
+        self.end_items =[self.vip_man, self.window, self.thugs, self.bat_end, self.next_room_button]
         self.current_items = [self.vip_man, self.window, self.bat, self.thugs, self.rope]
         self.all_items = list(set(self.end_items + self.start_items + self.current_items + [self.vip]))
         
@@ -669,7 +670,6 @@ class Room6():
         pos = pygame.mouse.get_pos()                    
         change_cursor(self.all_items, pos)
         
-        #clicked_items = [item for item in self.all_items if (isinstance(item, DraggableClue) and item.clicked == True)]
         # speak to man to get vip ticket
         if self.vip_man.clicked == True: 
             self.vip_man_speak.play_sound((400, 60))
@@ -705,7 +705,6 @@ class Room6():
             self.text.remove_text()
             self.bat.draw()
             self.bat_click.image = ""
-            self.bat_click.self_vis = False
             
         if self.bat.clicked == True:
             self.bat.image = ROOM_6_BAT_TURN
@@ -734,8 +733,8 @@ class Room6():
             self.window.image = ROOM_6_WINDOW_BROKEN
             self.bat.image = ROOM_6_BAT
             self.window_smash.play_sound((430, 130))
-            self.bat.rect.topleft = (470, 230)#(650, 180)
-            self.bat = Clickable(self, 650, 180, ROOM_6_BAT)
+            self.bat = Clickable(self, 470, 230, ROOM_6_BAT)
+            self.bat_end.draw()
             self.window_smash.sound == ""
             
         if self.window.image == ROOM_6_WINDOW_BROKEN:
@@ -907,16 +906,19 @@ class Room8:
         self.tree = Clickable(self, 242, 183, ROOM_8_TREE)
         self.grass1 = Clickable(self, 630, 530, ROOM_8_GRASS1)
         self.grass2 = Clickable(self, 380, 540, ROOM_8_GRASS2)
-        self.girl = FadeIn(self, 560, 300, ROOM_8_DAUGHTER)
-        self.mother = FadeIn(self, 700, 20, ROOM_8_MOTHER)
+        self.girl_items = [self.tree, self.grass1, self.grass2] #and a plank
+        self.girl = FadeIn(self, 560, 300, ROOM_8_DAUGHTER, self.girl_items)
+        self.girl_click = Clickable(self, 560, 300, ROOM_8_DAUGHTER)
+        self.mum_items = [self.girl_click, self.grass1, self.grass2]
+        self.mother = FadeIn(self, 700, 20, ROOM_8_MOTHER, self.mum_items)
         self.lock_sound = AudioClue(self, self.lock, ROOM_8_KEY_LOCK, 100, False, func=self.girl.fade_in)
-        self.girl_speak = AudioClue(self, self.girl, ROOM_8_GIRL, 500, False, func=self.mother.fade_in)
-        self.mother_speak = AudioClue(self, self.mother, ROOM_8_GIRL, 500, False)
+        self.girl_speak = AudioClue(self, self.girl, ROOM_8_GIRL_SPEAK, 3000, False, func=self.mother.fade_in, func_pause=True)
+        self.mother_speak = AudioClue(self, self.mother, ROOM_8_MOTHER_SPEAK, 500, False)
         self.text = Text("", "top")
         self.start_items = [self.plank1, self.plank2, self.plank3, self.stick1, self.stick2, self.stick3, self.lock, self.grass1, self.grass2]
         self.end_items = []
-        self.current_items = [self.girl, self.tree, self.key] # anything else that should be on screen
-        self.all_items = list(set(self.end_items + self.start_items + self.current_items))
+        self.current_items = [self.girl, self.tree, self.grass1, self.grass2] # anything else that should be on screen
+        self.all_items = list(set(self.end_items + self.start_items + self.current_items + [self.key]))
         self.next_room = False
         self.has_collectable = False
 
@@ -928,17 +930,47 @@ class Room8:
         self.plank1.draw()
         self.plank2.draw()
         self.plank3.draw()
-        #self.tree.draw()
         self.grass1.draw()
         self.grass2.draw()
         
         pos = pygame.mouse.get_pos()                    
         change_cursor(self.all_items, pos)
 
-        # self.stick3.draw()
-
         self.text.blit_text()
         self.text.text = "Just like in the report, Sara's mother owns this land, and someone seems to be inside that shed!"
+
+        if self.key.rect.colliderect(self.lock) and pygame.mouse.get_pressed()[0]:
+            self.lock.image = ""
+            self.lock.self_vis = False
+            self.lock_sound.play_sound((386, 268))
+            self.lock_sound == ""
+            self.lock.rect.topleft = (0,0)
+            
+        if self.girl.show_fader == True:
+            self.key.image = ""
+            WIN.blit(self.girl.image, (560, 300))
+            self.girl.draw()
+            self.girl_speak.play_sound((560, 300))
+            self.girl_speak.sound = ""
+            
+        if self.mother.show_fader == True:
+            WIN.blit(self.mother.image, (700, 20))
+            self.mother_speak.play_sound((700, 20))
+            self.mother_speak.sound = ""
+            
+            #self.mother_speak.play_sound((560, 300))
+            #self.mother_speak.sound = ""
+            #WIN.blit(self.mother.image, (700, 20))
+            #if self.mother.show_fader == True:
+            #WIN.blit(self.mother.image, (700, 20))
+            #self.mother_speak.play_sound((560, 300))
+            #self.mother_speak.sound = ""
+
+
+
+
+
+
 
         # stick 1 logic
         if self.stick1.area.rect.collidepoint(pos) and self.stick1.clicked == True:
@@ -1023,54 +1055,18 @@ class Room8:
             if self.tree.clicked == True:
                 self.key.draw()  # key is draw when the tree is clicked before the planks are gone
                 self.key.click_and_drag()
-
-
-        if self.key.rect.colliderect(self.lock) and pygame.mouse.get_pressed()[0]:
-            self.lock.image = ""
-            self.lock.self_vis = False
-            self.key.image = ""
-            self.lock_sound.play_sound((386, 268))
-            self.lock_sound == ""
-            self.lock.rect.topleft = (0,0)
             
-        if self.girl.show_fader == True:
-            WIN.blit(self.girl.image, (560, 300))
-            self.girl_speak.play_sound((560, 300))
-            self.girl_speak.sound = ""
             
-        if self.mother.show_fader == True:
-            WIN.blit(self.mother.image, (700, 20))
-            self.mother_speak.play_sound((560, 300))
-            self.mother_speak.sound = ""
+        #if self.mother.show_fader == True:
+         #   WIN.blit(self.mother.image, (700, 20))
+          #  self.mother_speak.play_sound((560, 300))
+           # self.mother_speak.sound = ""
             
             # self.key.self_vis = False
             # self.girl_speak.play_sound((585, 200))
             # self.girl_speak.sound = ""
             # self.girl.fade_in
 
-
-
-        # if (
-        #     self.key.self_vis == False
-        #     and self.key.image == ""
-        #     and self.lock.self_vis == False
-        #     and self.lock.image == ""
-        # ):
-            # self.lock_sound.play_sound((585, 200))
-            # self.lock_sound.sound = ""
-            # self.girl.fade_in
-            # self.girl_speak.play_sound(self.girl.rect.topleft)
-            # self.girl_speak.sound = ""
-            # pygame.time.delay(5000)
-            # self.girl.image == ""
-            # self.girl.self_vis = False
-            # self.girl.fade_out
-
-
-
-        # when the mother stops talking the sticks need to be placed together
-
-        # after mother fades out/disapears last text box appears and then the end
 
         pygame.display.update()
 
@@ -1107,7 +1103,7 @@ end = End()
 class GameState():
     
     def __init__(self):
-        self.state = 'room8'
+        self.state = 'room6'
         
     def menu(self):
         menu.start_screen()
