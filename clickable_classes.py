@@ -121,32 +121,39 @@ class Clickable():
 
 # item that fades into the room
 class FadeIn(Clickable):
-    def __init__(self, room, x, y, image):
+    def __init__(self, room, x, y, image, extra_current_items=[]):
         super().__init__(room, x, y, image)
         self.show_fader = False
         self.self_vis = False
+        self.extra_current_items = extra_current_items
         
     def fade_in(self):
+        
+        current_items = self.extra_current_items if len(self.extra_current_items) else self.room.current_items
+        
         if self.image != "":
             for alpha in range(256):
                 self.image.set_alpha(alpha)
-                redraw_window(self.room, self.room.current_items)
+                redraw_window(self.room, current_items)
                 WIN.blit(self.image, (self.rect.topleft))
                 pygame.display.update()   
             if alpha == 255:
                 self.show_fader = True
 
     def fade_out(self):
+        
+        current_items = self.extra_current_items if len(self.extra_current_items) else self.room.current_items
+        
         if self.image != "":
             for alpha in range(256):
                 self.image.set_alpha(256-alpha)
-                redraw_window(self.room, self.room.current_items)
+                redraw_window(self.room, current_items)
                 WIN.blit(self.image, (self.rect.topleft))
                 pygame.display.update()        
 
 # Audio clue that can trigger a function if needed
 class AudioClue():
-    def __init__(self, room, item, sound, pause, repeat, second_sound="", third_sound="", func="", fourth_sound=""):
+    def __init__(self, room, item, sound, pause, repeat, second_sound="", third_sound="", func="", fourth_sound="", func_pause=""):
         self.room = room
         self.item = item
         self.sound = sound
@@ -155,6 +162,7 @@ class AudioClue():
         self.third_sound = third_sound
         self.pause = pause
         self.func = func
+        self.func_pause = func_pause
         self.arrived = False
         self.third_sound = third_sound
         self.fourth_sound = fourth_sound
@@ -171,7 +179,11 @@ class AudioClue():
         if self.func == "":
             pass
         else:
-            self.func()
+            if self.func_pause == True:
+                pygame.time.delay(self.pause)
+                self.func()
+            else:
+                self.func()
 
     def play_sound(self, topleft):        
         # this will stop the sound playing more than once
