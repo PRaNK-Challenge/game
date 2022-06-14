@@ -62,7 +62,8 @@ def change_cursor(items, pos):
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
             else:
                 pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-                
+ 
+# CLASSES               
 # for putting text on screen
 class Text():
     def __init__(self, text, blit_position):
@@ -96,7 +97,8 @@ class Text():
            
     def remove_text(self):
         self.text = "" 
-        
+ 
+       
 # Parent class for drawing images on screen and checking if they've been clicked
 class Clickable():
     def __init__(self, room, x, y, image=""):
@@ -119,13 +121,15 @@ class Clickable():
                 if self.rect.collidepoint(pos) and pygame.mouse.get_pressed()[0]:# and len(clicked_items) == 0:
                     self.clicked=True
 
+
 # item that fades into the room
 class FadeIn(Clickable):
-    def __init__(self, room, x, y, image, extra_current_items=[]):
+    def __init__(self, room, x, y, image, extra_current_items=[], extra_current_items2=[]):
         super().__init__(room, x, y, image)
         self.show_fader = False
         self.self_vis = False
         self.extra_current_items = extra_current_items
+        self.extra_current_items2 = extra_current_items2
         
     def fade_in(self):
         
@@ -142,7 +146,7 @@ class FadeIn(Clickable):
 
     def fade_out(self):
         
-        current_items = self.extra_current_items if len(self.extra_current_items) else self.room.current_items
+        current_items = self.extra_current_items2 if len(self.extra_current_items2) else self.extra_current_items if len(self.extra_current_items) else self.room.current_items
         
         if self.image != "":
             for alpha in range(256):
@@ -150,6 +154,7 @@ class FadeIn(Clickable):
                 redraw_window(self.room, current_items)
                 WIN.blit(self.image, (self.rect.topleft))
                 pygame.display.update()        
+
 
 # Audio clue that can trigger a function if needed
 class AudioClue():
@@ -212,8 +217,9 @@ class AudioClue():
                         self.carry_out_func()
                         if self.fourth_sound != "":
                             self.fourth_sound.play()
-            
-# Child class, a clickable item that can be collected, final clue before next room
+   
+         
+# A clickable item that can be collected, final clue before next room
 class CollectableClue(Clickable):
     def __init__(self, room, x, y, image, next_x, next_y, size= ""):
         super().__init__(room, x, y, image)
