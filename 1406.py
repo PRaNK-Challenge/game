@@ -639,7 +639,7 @@ class Room4():
         self.open_bag = ROOM_4_OPEN_BAG
         # self.shine = ROOM_4_SHINE
         self.necklace = CollectableClue(self, 600, 355, ROOM_4_NECKLACE, 15, HEIGHT - 105)
-        self.text = Text("Well, Tom doesn't seem to be anywhere around here.                                   I wonder if this man has seen him...", "top")
+        self.text = Text("Well, Tom doesn't seem to be anywhere around here.                                I wonder if this man has seen him...", "top")
         self.start_items = [self.drunk, self.bottle, self.bag]
         self.end_items = [self.drunk, self.bottle, self.bag, self.necklace, self.necklace.next_room_button]
         self.all_items = list(set(self.end_items + self.start_items))
@@ -722,7 +722,8 @@ class Room5():
         self.smash = AudioClue(self, self.lock, ROOM_5_SMASH, 50, True)
         self.poster = CollectableClue(self, 350, 5, ROOM_5_NOTE, 25, HEIGHT - 115, size=(55, 80))
         self.lock_space = pygame.draw.rect(WIN, TRANSPARENT, (238,200,30,30))
-        self.text = Text("Looks like there's no one home. I wonder if they left a key somewhere so I can look around... I just hope no one comes home soon!", "bottom")
+        self.text = Text("Looks like there's no one home. Nothing wrong with having a little look around though. Might be worth trying to get some clues.", "top")
+        self.text_italic = Text_non_italic("", "bottom")
         self.start_items = [self.key, self.plant, self.lock, self.rock, self.keyhole]
         self.end_items = [self.plant, self.rock_end, self.keyhole, self.key_end, self.poster, self.poster.next_room_button]
         self.current_items = [self.plant, self.rock, self.keyhole, self.key, self.lock]
@@ -738,6 +739,7 @@ class Room5():
         self.lock.draw()
         self.rock.draw()
         self.text.blit_text()
+        self.text_italic.blit_text_non_italic()
         
         # cursor becomes hand when hovering over Clickable
         pos = pygame.mouse.get_pos()                    
@@ -764,7 +766,7 @@ class Room5():
             self.man.fade_out()
         
         if self.man_speak.sound == "":
-            self.text = Text("Looks like we'll need some way of breaking in to the garage! Maybe try smashing the lock with something...", "top")
+            self.text = Text("Looks like I'll need some way of breaking in to the garage! That lock doesn't look sturdy, with a little force it should open.", "top")
             if isinstance(self.rock, DraggableClue):
                 self.rock.click_and_drag()
         
@@ -784,7 +786,8 @@ class Room5():
                 self.poster.self_vis = True
         
         if self.poster.self_vis == True:
-            self.text = Text("Found this poster. Looks like I'll be checking out this club tonight...", "bottom")
+            self.text.remove_text()
+            self.text_italic = Text_non_italic('"Hmm, poster advertising a club... And today the members are meeting up. Guess I am gonna go clubbing tonight..."', "bottom")
         
         if self.poster.clicked == True:
             self.poster.collect()
@@ -1259,7 +1262,7 @@ end = End()
 class GameState():
     
     def __init__(self):
-        self.state = 'room4'
+        self.state = 'room5'
         
     def menu(self):
         menu.start_screen()
