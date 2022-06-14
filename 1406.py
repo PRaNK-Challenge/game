@@ -405,7 +405,7 @@ class Room1():
         
         # key is revealed, can be moved
         if self.phone.clicked == True and self.tissues.clicked == True:
-            self.text = Text("Oh good, that seems to have helped her.                                                   Ah! There's the key to the drawer! Let's get that casefile.", "top")
+            self.text = Text("Oh good, that seems to have helped her.                                                 Ah! There's the key to the drawer! Let's get that casefile.", "top")
             self.key.draw()
             if isinstance(self.key, DraggableClue):
                 self.key.click_and_drag()
@@ -816,6 +816,7 @@ class Room6():
         self.vip_man_speak = AudioClue(self, self.vip_man, ROOM_6_VIP_MAN_SPEAK, 0, True)
         self.gang_speak = AudioClue(self, self.gang, ROOM_6_GANG_SPEAK, 0, True)
         self.text_non_italic = Text_non_italic('"Hey, the bouncer won\'t let me through, right? Those guys are my mates from the club. Do you have a spare VIP ticket by any chance?"', "bottom")
+        self.text = Text("", "bottom")
         self.next_room_button = Clickable(self, WIDTH - 200, HEIGHT - 150, NEXT_BUTTON)
         self.start_items =[self.vip_man, self.gang, self.rope, self.bouncer, self.drink, self.window, self.bat]
         self.end_items =[self.vip_man, self.window, self.gang, self.bat_end, self.next_room_button]
@@ -835,6 +836,7 @@ class Room6():
         self.bat_click.draw()
         self.drink.draw()
         self.text_non_italic.blit_text_non_italic()
+        self.text.blit_text()
         
         # cursor becomes hand when hovering over Clickable
         pos = pygame.mouse.get_pos()                    
@@ -932,12 +934,12 @@ class Room7():
         self.poster_zoom = CollectableClue(self, 290, 30, ROOM_7_POSTER_ZOOM, 0, 0)
         self.file = Clickable(self, 190, 355, ROOM_3_FILE)
         self.file_zoom = CollectableClue(self, 260, 10, ROOM_7_FILE_ZOOM, 0, 0)
-        self.necklace_text = Text("Tom gave her a necklace with his address on it, who knows why he'd want her to go there, seems like he had a rough family dynamic.", "bottom")
-        self.file_text = Text("Her friend's father was gathering information on Tom which is a bit much, but seems like he didn't actually find a lot to be worried about, he's just a kid.", "bottom")
-        self.photo_text = Text("So, we know she was friends with Tom, who these parents all thought was trouble.", "bottom")
-        self.poster_text = Text("We didn't find him at the club with his gang, but it seems he ran with a rough crowd, I wouldn't trust them, or anyone they hung around with.", "bottom")
-        self.diary_text = Text("We know from her diary her mother was overprotective of her and would do anything to keep her away from Tom.", "bottom")
-        self.final_text = Text("Now that I'm looking at all of this, I think it's pretty obvious who knows where she is!", "bottom")
+        self.necklace_text_non_italic = Text_non_italic('"Tom gave her a necklace with his address on it, who knows why he\'d want her to go there, seems like he had a rough family dynamic. But why would he have it, just to throw it away?"', "bottom")
+        self.file_text_non_italic = Text_non_italic('"Her friend\'s father was gathering information on Tom which is a bit much, but seems like he didn\'t actually find a lot to be worried about, he\'s just a kid."', "bottom")
+        self.photo_text_non_italic = Text_non_italic('"So, we know she was friends with Tom, but all the parents thought he was trouble."', "bottom")
+        self.poster_text_non_italic = Text_non_italic('"We didn\'t find him at the club with his gang, which could be a good sign. But it seems he ran with a rough crowd, I wouldn\'t trust them."', "bottom")
+        self.diary_text_non_italic = Text_non_italic('"We know from her diary her mother was overprotective of her and would do anything to keep her away from Tom."', "bottom")
+        self.final_text_non_italic = Text_non_italic('"Now that I\'m looking at all of this, I think I have a good idea of who might know where Sara is!"', "bottom")
         self.text = Text("", "bottom")
         self.guess1 = Clickable(self, 160, 30, GUESS_BOX)
         self.guess2 = Clickable(self, 500, 30, GUESS_BOX)
@@ -969,21 +971,21 @@ class Room7():
         if len(zoomed) or (self.folder.clicked == False and not len(zoomed)):
             change_cursor(self.all_items, pos)
         
-        def click_item(item, item_zoom, item_text):
+        def click_item(item, item_zoom, item_text_non_italic):
             if item.clicked == True:
-                item_text.blit_text()
+                item_text_non_italic.blit_text_non_italic()
                 item_zoom.draw()
                 item_zoom.self_vis = True
                 if pygame.mouse.get_pressed()[0] and not item.rect.collidepoint(pos):
                     item_zoom.self_vis = False
                     item_zoom.image = ""
-                    item_text.remove_text()
+                    item_text_non_italic.remove_text_non_italic()
                     
-        click_item(self.file, self.file_zoom, self.file_text)    
-        click_item(self.necklace, self.necklace_zoom, self.necklace_text)
-        click_item(self.poster, self.poster_zoom, self.poster_text)
-        click_item(self.diary, self.diary_zoom, self.diary_text)
-        click_item(self.photo, self.photo_zoom, self.photo_text)        
+        click_item(self.file, self.file_zoom, self.file_text_non_italic)    
+        click_item(self.necklace, self.necklace_zoom, self.necklace_text_non_italic)
+        click_item(self.poster, self.poster_zoom, self.poster_text_non_italic)
+        click_item(self.diary, self.diary_zoom, self.diary_text_non_italic)
+        click_item(self.photo, self.photo_zoom, self.photo_text_non_italic)        
         
         # which clues have been clicked and which haven't, enter final stage
         clues = [self.necklace, self.photo, self.file, self.diary, self.poster]
@@ -997,7 +999,7 @@ class Room7():
                 
             if self.folder.clicked == True:    
                 self.folder.draw()
-                self.final_text.blit_text()
+                self.final_text_non_italic.blit_text_non_italic()
                 self.folder_zoom.draw()
                 self.folder_zoom.self_vis = True
                 self.file_zoom.image = ""
@@ -1011,16 +1013,16 @@ class Room7():
                 self.guess4.draw()
                 self.guess1.draw()
                 guess1 = ADVENTURE_FONT.render(
-                            "The Boy", 1, BLACK)
+                            "Tome", 1, BLACK)
                 WIN.blit(guess1, (250, 90))
                 guess2 = ADVENTURE_FONT.render(
-                            "The Boy's Friends", 1, BLACK)
+                            "The Gang", 1, BLACK)
                 WIN.blit(guess2, (550, 90))
                 guess3 = ADVENTURE_FONT.render(
-                            "The Girl's Mother", 1, BLACK)
+                            "The Sara's Mother", 1, BLACK)
                 WIN.blit(guess3, (200, 230))
                 guess4 = ADVENTURE_FONT.render(
-                            "The Friend's Parents", 1, BLACK)
+                            "The Emma's Parents", 1, BLACK)
                 WIN.blit(guess4, (540, 230))
                 change_cursor(self.guesses, pos)
                 
@@ -1259,7 +1261,7 @@ end = End()
 class GameState():
     
     def __init__(self):
-        self.state = 'room6'
+        self.state = 'room7'
         
     def menu(self):
         menu.start_screen()
