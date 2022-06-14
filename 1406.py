@@ -281,7 +281,7 @@ ROOM_7_FILE = pygame.transform.scale(
     pygame.image.load(os.path.join("art", "room7", "room3_file.png")), (80, 80)
 )
 ROOM_7_FILE_ZOOM = pygame.transform.scale(
-    pygame.image.load(os.path.join("art", "room7", "file_zoom7.png")), (500, 500)
+    pygame.image.load(os.path.join("art", "room7", "file_zoom7.png")), (450, 450)
 )
 GUESS_BOX = pygame.transform.scale(
     pygame.image.load(os.path.join("art", "other", "text_box.png")), (270, 150)
@@ -1232,13 +1232,13 @@ class Room7:
                 self.guess3.draw()
                 self.guess4.draw()
                 self.guess1.draw()
-                guess1 = ADVENTURE_FONT.render("Tome", 1, BLACK)
+                guess1 = ADVENTURE_FONT.render("Tom", 1, BLACK)
                 WIN.blit(guess1, (250, 90))
                 guess2 = ADVENTURE_FONT.render("The Gang", 1, BLACK)
                 WIN.blit(guess2, (550, 90))
-                guess3 = ADVENTURE_FONT.render("The Sara's Mother", 1, BLACK)
+                guess3 = ADVENTURE_FONT.render("Sara's Mother", 1, BLACK)
                 WIN.blit(guess3, (200, 230))
-                guess4 = ADVENTURE_FONT.render("The Emma's Parents", 1, BLACK)
+                guess4 = ADVENTURE_FONT.render("Emma's Parents", 1, BLACK)
                 WIN.blit(guess4, (540, 230))
                 change_cursor(self.guesses, pos)
 
