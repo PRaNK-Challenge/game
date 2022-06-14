@@ -91,7 +91,7 @@ ROOM_3_DIARY = pygame.transform.scale(
     pygame.image.load(os.path.join("art", "room3", "room2_diary_zoom.png")), (700, 550)
 ).convert_alpha()
 ROOM_3_PEOPLE = pygame.transform.scale(
-    pygame.image.load(os.path.join("art", "room3", "room3_people.png")), (380, 285)
+    pygame.image.load(os.path.join("art", "room3", "room3_people.png")), (370, 240)
 )
 ROOM_3_CANDLE = pygame.transform.scale(
     pygame.image.load(os.path.join("art", "room3", "room3_candle.png")), (140, 160)
@@ -107,7 +107,7 @@ ROOM_3_PHOTO = pygame.transform.scale(
     pygame.image.load(os.path.join("art", "room3", "room3_photo.png")), (100, 100)
 )
 ROOM_3_PHOTO_FLIP = pygame.transform.scale(
-    pygame.image.load(os.path.join("art", "room3", "room3_photo_flip.png")), (80, 80)
+    pygame.image.load(os.path.join("art", "room3", "room3_photo_flip.png")), (60, 60)
 )
 # Room 3 sounds
 ROOM_3_DAD = pygame.mixer.Sound(os.path.join("sounds", "ROOM_3_DAD.mp3"))
@@ -541,8 +541,8 @@ class Room3():
         self.image = ROOM_3_BACKGROUND
         self.candle = Clickable(self, 590, 350, ROOM_3_CANDLE)
         self.photo = CollectableClue(self, 70, 140, ROOM_3_PHOTO, 700, 250)
-        self.file = CollectableClue(self, 830, 270, ROOM_3_FILE, 15, HEIGHT - 100)
-        self.people = Clickable(self, 570, 107, ROOM_3_PEOPLE)
+        self.file = CollectableClue(self, 815, 280, ROOM_3_FILE, 15, HEIGHT - 100)
+        self.people = Clickable(self, 570, 146, ROOM_3_PEOPLE)
         self.peoplespeak = AudioClue(self, self.people, ROOM_3_DAD, 1500, False, ROOM_3_MUM)
         self.daughterspeak = AudioClue(self, self.people, ROOM_3_DAUGHTER, 300, False)
         self.drawer = pygame.draw.rect(WIN, TRANSPARENT, (90,250,80,80))
@@ -600,7 +600,7 @@ class Room3():
         # click the photo, goes to girl who speaks
         if self.photo.rect.topleft == (self.photo.next_x, self.photo.next_y):
             self.text = Text("", "top")
-            self.text_non_italic = Text_non_italic('"So are you sure you don\'t know anything at all?"                                "Then who\'s this boy with you in the photo?"                                     "And what\'s that file your father has?"', "bottom")
+            self.text_non_italic = Text_non_italic('"So are you sure you don\'t know anything at all?"                                "Then who\'s this boy with you in the photo?"                                        "And what\'s that file your father has?"', "bottom")
             self.daughterspeak.play_sound(self.daughterspeak.item.rect.topleft)
             self.daughterspeak.sound = ""
             self.file.self_vis = True
