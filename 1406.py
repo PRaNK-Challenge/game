@@ -186,9 +186,6 @@ ROOM_6_DRINK = pygame.transform.scale(
 ROOM_6_VIP = pygame.transform.scale(
     pygame.image.load(os.path.join("art", "room6", "room6_vip.png")), (70, 50)
 )
-ROOM_6_VIP_GONE = pygame.transform.scale(
-    pygame.image.load(os.path.join("art", "room6", "room6_vip_gone.png")), (70, 50)
-)
 ROOM_6_ROPE = pygame.transform.scale(
     pygame.image.load(os.path.join("art", "room6", "room6_rope.png")), (380, 250)
 )
@@ -818,7 +815,7 @@ class Room6():
         self.bat_end = Clickable(self, 470, 230, ROOM_6_BAT)
         self.vip_man_speak = AudioClue(self, self.vip_man, ROOM_6_VIP_MAN_SPEAK, 0, True)
         self.gang_speak = AudioClue(self, self.gang, ROOM_6_GANG_SPEAK, 0, True)
-        self.text = Text("Those guys look like his friends I saw in the photo in the file her friend's dad had. But they're in the VIP area, how do I get in?", "bottom")
+        self.text_non_italic = Text_non_italic('"Hey, the bouncer won\'t let me through, right? Those guys are my mates from the club. Do you have a spare VIP ticket by any chance?"', "bottom")
         self.next_room_button = Clickable(self, WIDTH - 200, HEIGHT - 150, NEXT_BUTTON)
         self.start_items =[self.vip_man, self.gang, self.rope, self.bouncer, self.drink, self.window, self.bat]
         self.end_items =[self.vip_man, self.window, self.gang, self.bat_end, self.next_room_button]
@@ -837,7 +834,7 @@ class Room6():
         self.bouncer.draw()
         self.bat_click.draw()
         self.drink.draw()
-        self.text.blit_text()
+        self.text_non_italic.blit_text_non_italic()
         
         # cursor becomes hand when hovering over Clickable
         pos = pygame.mouse.get_pos()                    
@@ -847,7 +844,7 @@ class Room6():
         if self.vip_man.clicked == True: 
             self.vip_man_speak.play_sound((400, 60))
             self.vip_man_speak.sound = ""
-            self.text.text = "OK, looks like I'll have to buy this guy a drink if I want to get into the VIP area."
+            self.text_non_italic = Text_non_italic('"Ok, guess I will be spending some money tonight..."', "bottom")
             if isinstance(self.drink, DraggableClue):
                 self.drink.click_and_drag()
         
@@ -875,7 +872,7 @@ class Room6():
             self.bouncer_vip.fade_out()
             self.bouncer_vip.image = ""
             self.bouncer_vip.self_vis = False
-            self.text.remove_text()
+            self.text_non_italic.remove_text_non_italic()
             self.bat.draw()
             self.bat_click.image = ""
             
@@ -887,19 +884,19 @@ class Room6():
         # remove rope and speak to Tom's gang
         if self.rope.clicked == True and self.bouncer.image == "":
             self.rope.image = ""
-            self.text.text = "Excuse me, I'm looking for this guy, Tom. Have you seen him?"
+            self.text_non_italic = Text_non_italic('"Excuse me, I\'m looking for a guy named Tom. Have you seen him?"', "bottom")
             
         if self.gang.rect.collidepoint(pos) and pygame.mouse.get_pressed()[0] and self.bouncer_vip.image == "" and self.rope.image == "":
             self.gang_speak.play_sound((545, 100))
             self.gang_speak.sound = ""
             
         if self.gang_speak.sound == "" and isinstance(self.bat, DraggableClue):
-            self.text.remove_text()
+            self.text_non_italic.remove_text_non_italic()
             self.bat.click_and_drag()
 
         #smash the window and leave
         if self.bat.clicked == True and self.vip.image == "":
-            self.text.text = "Uh-oh, looks like I better get out of here!"
+            self.text_non_italic = Text_non_italic('"Uh-oh, looks like I better get out of here and fast!"', "bottom")
             self.bat.image = ROOM_6_BAT_TURN
         
         if self.bat.rect.colliderect(self.window) and pygame.mouse.get_pressed()[0]:
@@ -911,7 +908,7 @@ class Room6():
             self.window_smash.sound == ""
             
         if self.window.image == ROOM_6_WINDOW_BROKEN:
-            self.text.text = "Uh-oh, looks like I better get out of here!"
+            self.text_non_italic = Text_non_italic('"Uh-oh, looks like I better get out of here and fast!"', "bottom")
             self.next_room_button.draw()
             self.vip_man.image = ROOM_6_VIP_MAN_END
             
@@ -1262,7 +1259,7 @@ end = End()
 class GameState():
     
     def __init__(self):
-        self.state = 'room5'
+        self.state = 'room6'
         
     def menu(self):
         menu.start_screen()
