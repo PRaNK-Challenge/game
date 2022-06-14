@@ -260,19 +260,19 @@ ROOM_7_POSTER_ZOOM = pygame.transform.scale(
     pygame.image.load(os.path.join("art", "room7", "posterzoom7.png")), (350, 450)
 )
 ROOM_7_PHOTO = pygame.transform.scale(
-    pygame.image.load(os.path.join("art", "room7", "picsmall7.png")), (100, 80)
+    pygame.image.load(os.path.join("art", "room7", "picsmall7.png")), (80, 50)
 )
 ROOM_7_PHOTO_ZOOM = pygame.transform.scale(
     pygame.image.load(os.path.join("art", "room7", "piczoom7.png")), (650, 400)
 )
 ROOM_7_FOLDER = pygame.transform.scale(
-    pygame.image.load(os.path.join("art", "room7", "foldersmall7.png")), (100, 60)
+    pygame.image.load(os.path.join("art", "room7", "foldersmall7.png")), (120, 100)
 )
 ROOM_7_FOLDER_ZOOM = pygame.transform.scale(
     pygame.image.load(os.path.join("art", "room7", "folderzoom7.png")), (550, 450)
 )
 ROOM_7_DIARY = pygame.transform.scale(
-    pygame.image.load(os.path.join("art", "room7", "diarysmall7.png")), (100, 60)
+    pygame.image.load(os.path.join("art", "room7", "diarysmall7.png")), (80, 45)
 )
 ROOM_7_DIARY_ZOOM = pygame.transform.scale(
     pygame.image.load(os.path.join("art", "room7", "diaryzoom7.png")), (550, 400)
@@ -1106,11 +1106,11 @@ class Room7:
         self.image = ROOM_7_BACKGROUND
         self.necklace = Clickable(self, 590, 380, ROOM_7_NECKLACE)
         self.necklace_zoom = CollectableClue(self, 280, 25, ROOM_7_NECKLACE_ZOOM, 0, 0)
-        self.photo = Clickable(self, 550, 290, ROOM_7_PHOTO)
+        self.photo = Clickable(self, 550, 320, ROOM_7_PHOTO)
         self.photo_zoom = CollectableClue(self, 145, 30, ROOM_7_PHOTO_ZOOM, 0, 0)
-        self.folder = Clickable(self, 270, 440, ROOM_7_FOLDER)
+        self.folder = Clickable(self, 290, 420, ROOM_7_FOLDER)
         self.folder_zoom = CollectableClue(self, 190, 30, ROOM_7_FOLDER_ZOOM, 0, 0)
-        self.diary = Clickable(self, 380, 420, ROOM_7_DIARY)
+        self.diary = Clickable(self, 420, 430, ROOM_7_DIARY)
         self.diary_zoom = CollectableClue(self, 180, 30, ROOM_7_DIARY_ZOOM, 0, 0)
         self.poster = Clickable(self, 420, 370, ROOM_7_POSTER)
         self.poster_zoom = CollectableClue(self, 290, 30, ROOM_7_POSTER_ZOOM, 0, 0)
@@ -1175,7 +1175,7 @@ class Room7:
         self.photo.draw()
         self.diary.draw()
         self.file.draw()
-        WIN.blit(self.folder.image, (270, 440))
+        WIN.blit(self.folder.image, (290, 420))
 
         pos = pygame.mouse.get_pos()
         # allows changing the cursor only for images before the final guesses
