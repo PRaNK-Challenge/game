@@ -1,4 +1,5 @@
 import pygame
+import os
 
 pygame.init()
 pygame.font.init()
@@ -10,9 +11,9 @@ WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 WHITE = (255, 255, 255)
 BLACK = (0,0,0)
 TRANSPARENT = (0,0,0,0)
-ADVENTURE_FONT = pygame.font.SysFont('comicsans', 18)
-NEXT_BUTTON = pygame.transform.scale(pygame.image.load('next_button.png'), (230,150)).convert_alpha()
-TEXT_BOX = pygame.transform.scale(pygame.image.load('text_box.png'), (600, 130))
+ADVENTURE_FONT = pygame.font.SysFont('arial', 18)
+NEXT_BUTTON = pygame.transform.scale(pygame.image.load(os.path.join("art", "other",'next_button.png')), (230,150)).convert_alpha()
+TEXT_BOX = pygame.transform.scale(pygame.image.load(os.path.join("art", "other",'text_box.png')), (600, 130))
 
 # HELPER FUNCTIONS
 # to help fade between scenes, used by rooms and items, change to what's visible at beginning

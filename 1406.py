@@ -1,4 +1,5 @@
 import pygame
+import os
 
 #settings
 pygame.init()
@@ -15,154 +16,315 @@ FPS = 120
 WHITE = (255, 255, 255)
 BLACK = (0,0,0)
 TRANSPARENT = (0,0,0,0)
-ADVENTURE_FONT = pygame.font.SysFont('comicsans', 20)
+ADVENTURE_FONT = pygame.font.SysFont('arial', 20)
 
 # LOAD ALL IMAGES AND SOUNDS
 # Menu files
-MENU_SCREEN = pygame.transform.scale(pygame.image.load('menu_screen.png'), (WIDTH, HEIGHT))
-pygame.mixer.music.load('menu_music.mp3')
+MENU_SCREEN = pygame.transform.scale(pygame.image.load((os.path.join("art", "other",'menu_screen.png')), (WIDTH, HEIGHT)))
+pygame.mixer.music.load((os.path.join("sounds", "other",'menu_music.mp3')))
 
 # ROOM 1
 # Room 1 files
-ROOM_1_BACKGROUND = pygame.transform.scale(pygame.image.load('room1.png'), (WIDTH, HEIGHT))
-ROOM_1_PHONE = pygame.transform.scale(pygame.image.load('room1_phone.png'), (120,110))
-ROOM_1_TISSUES = pygame.transform.scale(pygame.image.load('room1_tissues.png'), (75,90))
-ROOM_1_KEY = pygame.transform.scale(pygame.image.load('room1_key.png'), (40,15))
-ROOM_1_MOTHER = pygame.transform.scale(pygame.image.load('room1_mother.png'), (220,290))
-ROOM_1_FOLDER = pygame.transform.scale(pygame.image.load('room1_folder.png'), (120, 100))
+ROOM_1_BACKGROUND = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room1", "room1.png")), (WIDTH, HEIGHT)
+)
+ROOM_1_PHONE = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room1", "room1_phone.png")), (120, 110)
+)
+ROOM_1_TISSUES = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room1", "room1_tissues.png")), (75, 90)
+)
+ROOM_1_KEY = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room1", "room1_key.png")), (40, 15)
+)
+ROOM_1_MOTHER = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room1", "room1_mother.png")), (220, 290)
+)
+ROOM_1_FOLDER = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room1", "room1_folder.png")), (120, 100)
+)
 # Room 1 sounds
-ROOM_1_MOTHER_SPEAK = pygame.mixer.Sound('room1_woman.mp3')
-ROOM_1_MAN = pygame.mixer.Sound('room1_man.mp3')
-ROOM_1_PHONE_SOUND = pygame.mixer.Sound('phone-ringing.mp3')
-ROOM_1_PHONE_PICKUP = pygame.mixer.Sound('phone_pick_up.mp3')
-ROOM_1_DOOR_KNOCK = pygame.mixer.Sound('door_knock.mp3')
-ROOM_1_CRYING = pygame.mixer.Sound('room1_crying.mp3')
+ROOM_1_MOTHER_SPEAK = pygame.mixer.Sound(os.path.join("sounds", "room1_woman.mp3"))
+ROOM_1_MAN = pygame.mixer.Sound(os.path.join("sounds", "room1_man.mp3"))
+ROOM_1_PHONE_SOUND = pygame.mixer.Sound(os.path.join("sounds", "phone-ringing.mp3"))
+ROOM_1_PHONE_PICKUP = pygame.mixer.Sound(os.path.join("sounds", "phone_pick_up.mp3"))
+ROOM_1_DOOR_KNOCK = pygame.mixer.Sound(os.path.join("sounds", "door_knock.mp3"))
+ROOM_1_CRYING = pygame.mixer.Sound(os.path.join("sounds", "room1_crying.mp3"))
 
-# ROOM 2
 # Room 2 images
-ROOM_2_BACKGROUND = pygame.transform.scale(pygame.image.load('room2.png'), (WIDTH, HEIGHT)).convert_alpha()
-ROOM_2_NOTE = pygame.transform.scale(pygame.image.load('room2_note.png'), (18, 15)).convert_alpha()
-ROOM_2_NOTE_ZOOM = pygame.transform.scale(pygame.image.load('room2_note_zoom.png'), (600, 550)).convert_alpha()
-ROOM_2_TWINKLE = pygame.transform.scale(pygame.image.load('room2_twinkle.png'), (15, 25)).convert_alpha()
-ROOM_2_KEY = pygame.transform.scale(pygame.image.load('room2_key.png'), (20, 25)).convert_alpha()
-ROOM_2_DIARY = pygame.transform.scale(pygame.image.load('room2_diary.png'), (100, 70)).convert_alpha()
-ROOM_2_CANDLE = pygame.transform.scale(pygame.image.load('room2_candle.png'), (30,80)).convert_alpha()
+ROOM_2_BACKGROUND = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room2", "room2.png")), (WIDTH, HEIGHT)
+).convert_alpha()
+ROOM_2_NOTE = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room2", "room2_note.png")), (18, 15)
+).convert_alpha()
+ROOM_2_NOTE_ZOOM = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room2", "room2_note_zoom.png")), (600, 550)
+).convert_alpha()
+ROOM_2_TWINKLE = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room2", "room2_twinkle.png")), (15, 25)
+).convert_alpha()
+ROOM_2_KEY = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room2", "room2_key.png")), (20, 25)
+).convert_alpha()
+ROOM_2_DIARY = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room2", "room2_diary.png")), (100, 70)
+).convert_alpha()
+ROOM_2_CANDLE = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room2", "room2_candle.png")), (30, 80)
+).convert_alpha()
 
-# ROOM 3
+# for middle of rooms 2&3
+# ROOM_23_BACKGROUND = pygame.transform.scale(
+#     pygame.image.load(os.path.join("art", "room2", "ROOM_23_BACKGROUND.jpeg")),
+#     (WIDTH, HEIGHT),
+# ).convert_alpha()
+
 # Room 3 images
-ROOM_3_BACKGROUND = pygame.transform.scale(pygame.image.load('room3.png'), (WIDTH, HEIGHT))
-ROOM_3_DIARY = pygame.transform.scale(pygame.image.load('room2_diary_zoom.png'), (700, 550)).convert_alpha()
-ROOM_3_PEOPLE = pygame.transform.scale(pygame.image.load('room3_people.png'), (380, 285))
-ROOM_3_CANDLE = pygame.transform.scale(pygame.image.load('room3_candle.png'), (120, 140))
-ROOM_3_CARD = pygame.transform.scale(pygame.image.load('room3_card.png'), (50, 40))
-ROOM_3_FILE = pygame.transform.scale(pygame.image.load('room3_file.png'), (100, 100))
-ROOM_3_KEY = pygame.transform.scale(pygame.image.load('room3_key.png'), (40, 30))
-ROOM_3_PHOTO = pygame.transform.scale(pygame.image.load('room3_photo.png'), (100, 100))
-ROOM_3_PHOTO_FLIP = pygame.transform.scale(pygame.image.load('room3_photo_flip.png'), (80, 80))
+ROOM_3_BACKGROUND = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room3", "room3.png")), (WIDTH, HEIGHT)
+)
+ROOM_3_DIARY = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room3", "room2_diary_zoom.png")), (700, 550)
+).convert_alpha()
+ROOM_3_PEOPLE = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room3", "room3_people.png")), (380, 285)
+)
+ROOM_3_CANDLE = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room3", "room3_candle.png")), (120, 140)
+)
+ROOM_3_CARD = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room3", "room3_card.png")), (50, 40)
+)
+ROOM_3_FILE = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room3", "room3_file.png")), (100, 100)
+)
+# ROOM_3_KEY = pygame.transform.scale(pygame.image.load(os.path.join("art", "room3", 'room3_key.png')), (40, 30))
+ROOM_3_PHOTO = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room3", "room3_photo.png")), (100, 100)
+)
+ROOM_3_PHOTO_FLIP = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room3", "room3_photo_flip.png")), (80, 80)
+)
 # Room 3 sounds
-ROOM_3_DAD = pygame.mixer.Sound('ROOM_3_DAD.mp3')
-ROOM_3_MUM = pygame.mixer.Sound('ROOM_3_mum.mp3')
-ROOM_3_DAUGHTER = pygame.mixer.Sound('ROOM_3_DAUGHTER.mp3')
+ROOM_3_DAD = pygame.mixer.Sound(os.path.join("sounds", "ROOM_3_DAD.mp3"))
+ROOM_3_MUM = pygame.mixer.Sound(os.path.join("sounds", "ROOM_3_mum.mp3"))
+ROOM_3_DAUGHTER = pygame.mixer.Sound(os.path.join("sounds", "ROOM_3_DAUGHTER.mp3"))
 
-# ROOM 4
 # Room 4 images
-ROOM_4_BACKGROUND = pygame.transform.scale(pygame.image.load('room4.png'), (WIDTH, HEIGHT))
-ROOM_4_DRUNK = pygame.transform.scale(pygame.image.load('room4_drunk.png'), (350, 350))
-ROOM_4_WATER = pygame.transform.scale(pygame.image.load('room4_water.png'), (50, 42))
-ROOM_4_BOTTLE = pygame.transform.scale(pygame.image.load('room4_bottle.png'), (80, 50))
-ROOM_4_FULL_BOTTLE = pygame.transform.scale(pygame.image.load('room4_full_bottle.png'), (65, 75))
-ROOM_4_BAG = pygame.transform.scale(pygame.image.load('room4_bag.png'), (100, 150))
-ROOM_4_OPEN_BAG = pygame.transform.scale(pygame.image.load('room4_open_bag.png'), (100, 150))
-ROOM_4_SHINE = pygame.transform.scale(pygame.image.load('room4_shine.png'), (35, 35))
-ROOM_4_NECKLACE = pygame.transform.scale(pygame.image.load('room4_necklace.png'), (150, 120)) 
+ROOM_4_BACKGROUND = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room4", "room4.png")), (WIDTH, HEIGHT)
+)
+ROOM_4_DRUNK = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room4", "room4_drunk.png")), (350, 350)
+)
+ROOM_4_WATER = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room4", "room4_water.png")), (50, 42)
+)
+ROOM_4_BOTTLE = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room4", "room4_bottle.png")), (80, 50)
+)
+ROOM_4_FULL_BOTTLE = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room4", "room4_full_bottle.png")), (65, 75)
+)
+ROOM_4_BAG = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room4", "room4_bag.png")), (100, 150)
+)
+ROOM_4_OPEN_BAG = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room4", "room4_open_bag.png")), (100, 150)
+)
+# ROOM_4_SHINE = pygame.transform.scale(pygame.image.load(os.path.join("art", "room4", 'room4_shine.png')), (35, 35))
+ROOM_4_NECKLACE = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room4", "room4_necklace.png")), (120, 110)
+)
 # Room 4 sounds
-ROOM_4_DRUNK_TALK = pygame.mixer.Sound('room4_drunk.mp3')
-ROOM_4_DRUNK_TALK2 = pygame.mixer.Sound('room4_drunk2.mp3')
-ROOM_4_WATER_RUN = pygame.mixer.Sound('room4_water.mp3')
+ROOM_4_DRUNK_TALK = pygame.mixer.Sound(os.path.join("sounds", "room4_drunk.mp3"))
+ROOM_4_DRUNK_TALK2 = pygame.mixer.Sound(os.path.join("sounds", "room4_drunk2.mp3"))
+ROOM_4_WATER_RUN = pygame.mixer.Sound(os.path.join("sounds",'room4_water.mp3'))
 
-# ROOM 5
 # Room 5 images
-ROOM_5_BACKGROUND = pygame.transform.scale(pygame.image.load('room5.png'), (WIDTH, HEIGHT))
-ROOM_5_MAN = pygame.transform.scale(pygame.image.load('room5_man.png'), (270, 450))
-ROOM_5_ROCK = pygame.transform.scale(pygame.image.load('room5_rock.png'), (40, 35)) 
-ROOM_5_LOCK = pygame.transform.scale(pygame.image.load('room5_lock.png'), (20, 30))
-ROOM_5_KEYHOLE = pygame.transform.scale(pygame.image.load('room5_keyhole.png'), (10, 10))
-ROOM_5_PLANT = pygame.transform.scale(pygame.image.load('room5_plant.png'), (220, 220))
-ROOM_5_NOTE = pygame.transform.scale(pygame.image.load('room5_note.png'), (300, 450))
-ROOM_5_KEY = pygame.transform.scale(pygame.image.load('room5_key.png'), (55, 20))
+ROOM_5_BACKGROUND = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room5", "room5.png")), (WIDTH, HEIGHT)
+)
+ROOM_5_MAN = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room5", "room5_man.png")), (270, 450)
+)
+ROOM_5_ROCK = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room5", "room5_rock.png")), (40, 35)
+)
+ROOM_5_LOCK = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room5", "room5_lock.png")), (20, 30)
+)
+ROOM_5_KEYHOLE = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room5", "room5_keyhole.png")), (10, 10)
+)
+ROOM_5_PLANT = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room5", "room5_plant.png")), (220, 220)
+)
+ROOM_5_NOTE = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room5", "room5_note.png")), (300, 450)
+)
+ROOM_5_KEY = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room5", "room5_key.png")), (50, 30)
+)
 # Room 5 sounds
-ROOM_5_CAR = pygame.mixer.Sound('room5_car.mp3')    
-ROOM_5_CAR2 = pygame.mixer.Sound('room5_car2.mp3')    
-ROOM_5_MAN_SPEAK = pygame.mixer.Sound('room5_man.mp3')  
-ROOM_5_SMASH = pygame.mixer.Sound('room5_smash.mp3')
+ROOM_5_CAR = pygame.mixer.Sound(os.path.join("sounds", "room5_car.mp3"))
+ROOM_5_CAR2 = pygame.mixer.Sound(os.path.join("sounds", "room5_car2.mp3"))
+ROOM_5_MAN_SPEAK = pygame.mixer.Sound(os.path.join("sounds", "room5_man.mp3"))
+ROOM_5_SMASH = pygame.mixer.Sound(os.path.join("sounds", "room5_smash.mp3"))
 
-# ROOM 6
 # Room 6 images
-ROOM_6_BACKGROUND = pygame.transform.scale(pygame.image.load('room6.png'), (WIDTH, HEIGHT))
-ROOM_6_DRINK = pygame.transform.scale(pygame.image.load('room6_drink.png'), (30, 30))
-ROOM_6_VIP = pygame.transform.scale(pygame.image.load('room6_vip.png'), (70, 50))
-ROOM_6_VIP_GONE = pygame.transform.scale(pygame.image.load('room6_vip_gone.png'), (70, 50))
-ROOM_6_ROPE = pygame.transform.scale(pygame.image.load('room6_rope.png'), (380, 250))
-ROOM_6_VIP_MAN = pygame.transform.scale(pygame.image.load('room6_vip_man.png'), (80, 250))
-ROOM_6_VIP_MAN_END = pygame.transform.scale(pygame.image.load('room6_vip_man_end.png'), (80, 250))
-ROOM_6_GANG = pygame.transform.scale(pygame.image.load('room6_gang.png'), (350, 270))
-ROOM_6_BOUNCER = pygame.transform.scale(pygame.image.load('room6_bouncer.png'), (250, HEIGHT-20))
-ROOM_6_BOUNCER_VIP = pygame.transform.scale(pygame.image.load('room6_bouncer_vip.png'), (250, HEIGHT-20))
-ROOM_6_BAT = pygame.transform.scale(pygame.image.load('room6_bat.png'), (65, 120))
-ROOM_6_BAT_TURN = pygame.transform.scale(pygame.image.load('room6_bat_turn.png'), (65, 120))
-ROOM_6_WINDOW = pygame.transform.scale(pygame.image.load('room6_window.png'), (120, 45))
-ROOM_6_WINDOW_BROKEN = pygame.transform.scale(pygame.image.load('room6_window_broken.png'), (120, 45))        
+ROOM_6_BACKGROUND = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room6", "room6.png")), (WIDTH, HEIGHT)
+)
+ROOM_6_DRINK = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room6", "room6_drink.png")), (30, 30)
+)
+ROOM_6_VIP = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room6", "room6_vip.png")), (70, 50)
+)
+ROOM_6_VIP_GONE = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room6", "room6_vip_gone.png")), (70, 50)
+)
+ROOM_6_ROPE = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room6", "room6_rope.png")), (380, 250)
+)
+ROOM_6_VIP_MAN = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room6", "room6_vip_man.png")), (80, 250)
+)
+ROOM_6_VIP_MAN_END = pygame.transform.scale(pygame.image.load(os.path.join("art", "room6", 'room6_vip_man_end.png')), (80, 250))
+ROOM_6_GANG = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room6", "room6_thugs.png")), (350, 270)
+)
+ROOM_6_BOUNCER = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room6", "room6_bouncer.png")),
+    (250, HEIGHT - 20),
+)
+ROOM_6_BOUNCER_VIP = pygame.transform.scale(pygame.image.load(os.path.join("art", "room6", 'room6_bouncer_vip.png'), (250, HEIGHT-20)))
+ROOM_6_BAT = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room6", "room6_bat.png")), (65, 120)
+)
+ROOM_6_BAT_TURN = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room6", "room6_bat_turn.png")), (65, 120)
+)
+ROOM_6_WINDOW = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room6", "room6_window.png")), (120, 45)
+)
+ROOM_6_WINDOW_BROKEN = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room6", "room6_window_broken.png")),
+    (120, 45),
+)
 # Room 6 sounds
-ROOM_6_VIP_MAN_SPEAK = pygame.mixer.Sound('room6_vip_man_speak.mp3')
-ROOM_6_GANG_SPEAK = pygame.mixer.Sound('room6_gang_speak.mp3')
-ROOM_6_WINDOW_SMASH = pygame.mixer.Sound('room6_window.mp3')
-ROOM_6_MUSIC = pygame.mixer.Sound('room6_music.mp3')
+ROOM_6_VIP_MAN_SPEAK = pygame.mixer.Sound(
+    os.path.join("sounds", "room6_vip_man_speak.mp3")
+)
+ROOM_6_GANG_SPEAK = pygame.mixer.Sound(os.path.join("sounds", "room6_thugs_speak.mp3"))
+ROOM_6_WINDOW_SMASH = pygame.mixer.Sound(os.path.join("sounds", "room6_window.mp3"))
+ROOM_6_MUSIC = pygame.mixer.Sound(os.path.join("sounds",'room6_music.mp3'))
 
-# ROOM 7
 # Room 7 images
-ROOM_7_BACKGROUND = pygame.transform.scale(pygame.image.load('office7.png'), (WIDTH, HEIGHT))
-ROOM_7_NECKLACE = pygame.transform.scale(pygame.image.load('necklacesmall7.png'), (70, 60))
-ROOM_7_NECKLACE_ZOOM = pygame.transform.scale(pygame.image.load('necklacezoom7.png'), (450, 450))
-ROOM_7_POSTER = pygame.transform.scale(pygame.image.load('postersmall7.png'), (180, 65))
-ROOM_7_POSTER_ZOOM = pygame.transform.scale(pygame.image.load('posterzoom7.png'), (350, 450))
-ROOM_7_PHOTO = pygame.transform.scale(pygame.image.load('picsmall7.png'), (100, 80))
-ROOM_7_PHOTO_ZOOM = pygame.transform.scale(pygame.image.load('piczoom7.png'), (650, 450))
-ROOM_7_FOLDER = pygame.transform.scale(pygame.image.load('foldersmall7.png'), (100, 60))
-ROOM_7_FOLDER_ZOOM = pygame.transform.scale(pygame.image.load('folderzoom7.png'), (550, 450))
-ROOM_7_DIARY = pygame.transform.scale(pygame.image.load('diarysmall7.png'), (100, 60))
-ROOM_7_DIARY_ZOOM = pygame.transform.scale(pygame.image.load('diaryzoom7.png'), (550, 400))
-ROOM_7_FILE_ZOOM = pygame.transform.scale(pygame.image.load('room3_file.png'), (500, 500))
-GUESS_BOX = pygame.transform.scale(pygame.image.load('text_box.png'), (270, 150))
+ROOM_7_BACKGROUND = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room7", "office7.png")), (WIDTH, HEIGHT)
+)
+ROOM_7_NECKLACE = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room7", "necklacesmall7.png")), (75, 60)
+)
+ROOM_7_NECKLACE_ZOOM = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room7", "necklacezoom7.png")), (450, 450)
+)
+ROOM_7_POSTER = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room7", "postersmall7.png")), (180, 65)
+)
+ROOM_7_POSTER_ZOOM = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room7", "posterzoom7.png")), (350, 450)
+)
+ROOM_7_PHOTO = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room7", "picsmall7.png")), (100, 80)
+)
+ROOM_7_PHOTO_ZOOM = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room7", "piczoom7.png")), (650, 400)
+)
+ROOM_7_FOLDER = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room7", "foldersmall7.png")), (100, 60)
+)
+ROOM_7_FOLDER_ZOOM = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room7", "folderzoom7.png")), (550, 450)
+)
+ROOM_7_DIARY = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room7", "diarysmall7.png")), (100, 60)
+)
+ROOM_7_DIARY_ZOOM = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room7", "diaryzoom7.png")), (550, 400)
+)
+ROOM_7_FILE_ZOOM = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room7", "room3_file.png")), (500, 500)
+)
+GUESS_BOX = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "other", "text_box.png")), (270, 150)
+)
 
 # You lose images
-YOU_LOSE = pygame.transform.scale(pygame.image.load('you_lose.png'), (WIDTH, HEIGHT))
-TRY_AGAIN = pygame.transform.scale(pygame.image.load('tryagain.png'), (800, 200))
+YOU_LOSE = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "badend", "you_lose.png")), (WIDTH, HEIGHT)
+)
+TRY_AGAIN = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "badend", "tryagain.png")), (800, 200)
+)
 
-# ROOM 8
 # Room 8 images
-ROOM_8_BACKGROUND = pygame.transform.scale(pygame.image.load('room8.png'), (WIDTH, HEIGHT))
-ROOM_8_PLANK1 = pygame.transform.scale(pygame.image.load('plank18.png'), (210, 140))
-ROOM_8_PLANK2 = pygame.transform.scale(pygame.image.load('plank28.png'), (200, 130))
-ROOM_8_PLANK3 = pygame.transform.scale(pygame.image.load('plank38.png'), (210, 80))
-ROOM_8_STICK1 = pygame.transform.scale(pygame.image.load('stick18.png'), (150, 95))
-ROOM_8_STICK2 = pygame.transform.scale(pygame.image.load('stick28.png'), (200, 130))
-ROOM_8_STICK3 = pygame.transform.scale(pygame.image.load('stick38.png'), (150, 30))
-ROOM_8_KEY = pygame.transform.scale(pygame.image.load('key8.png'), (30, 15))
-ROOM_8_TREE = pygame.transform.scale(pygame.image.load('tree8.png'), (10, 20))
-ROOM_8_GRASS1 = pygame.transform.scale(pygame.image.load("grass18.png"), (100,100))
-ROOM_8_GRASS2 = pygame.transform.scale(pygame.image.load("grass28.png"), (100, 100))
-ROOM_8_LOCK = pygame.transform.scale(pygame.image.load('lock8.png'), (15, 25))
-ROOM_8_MOTHER = pygame.transform.scale(pygame.image.load("mother8.png"), (250, 550))
-ROOM_8_MOTHER_HIT = pygame.transform.scale(pygame.image.load("mother_hit8.png"), (353, 563))
-ROOM_8_GIRL = pygame.transform.scale(pygame.image.load("daughter8.png"), (200, 400))
+
+ROOM_8_BACKGROUND = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room8", "room8.png")), (WIDTH, HEIGHT)
+)
+ROOM_8_PLANK1 = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room8", "plank18.png")), (200, 140)
+)
+ROOM_8_PLANK2 = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room8", "plank28.png")), (200, 130)
+)
+ROOM_8_PLANK3 = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room8", "plank38.png")), (210, 80)
+)
+ROOM_8_STICK1 = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room8", "stick18.png")), (150, 95)
+)
+ROOM_8_STICK2 = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room8", "stick28.png")), (100, 80)
+)
+ROOM_8_STICK3 = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room8", "stick38.png")), (150, 30)
+)
+ROOM_8_KEY = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room8", "key8.png")), (30, 15)
+)
+ROOM_8_TREE = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room8", "tree8.png")), (10, 20)
+)
+ROOM_8_GRASS1 = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room8", "grass18.png")), (100, 100)
+)
+ROOM_8_GRASS2 = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room8", "grass28.png")), (100, 100)
+)
+ROOM_8_LOCK = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room8", "lock8.png")), (15, 25)
+)
+ROOM_8_MOTHER = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room8", "mother8.png")), (250, 550)
+)
+ROOM_8_MOTHER_HIT = pygame.transform.scale(pygame.image.load(os.path.join("art", "room8","mother_hit8.png"), (353, 563)))
+ROOM_8_GIRL = pygame.transform.scale(
+    pygame.image.load(os.path.join("art", "room8", "daughter8.png")), (200, 400)
+)
 # Room 8 sounds
-ROOM_8_KEY_LOCK = pygame.mixer.Sound("room8_key_lock.mp3")
-ROOM_8_GIRL_SPEAK = pygame.mixer.Sound("room8_girl.mp3")
-ROOM_8_MOTHER_SPEAK = pygame.mixer.Sound("room8_mother.mp3")
-ROOM_8_PLANK_HIT_SOUND = pygame.mixer.Sound("room8_hit.mp3")
+
+ROOM_8_KEY_LOCK = pygame.mixer.Sound(os.path.join("sounds", "room8_key_lock.mp3"))
+ROOM_8_GIRL_SPEAK = pygame.mixer.Sound(os.path.join("sounds", "room8_girl.mp3"))
+ROOM_8_MOTHER_SPEAK = pygame.mixer.Sound(os.path.join("sounds", "room8_mother.mp3"))
+ROOM_8_PLANK_HIT_SOUND = pygame.mixer.Sound(os.path.join("sounds","room8_hit.mp3"))
 
 # Ending images
-END = pygame.transform.scale(pygame.image.load('good.png'), (WIDTH, HEIGHT))
+END = pygame.transform.scale(pygame.image.load(os.path.join("art", 'other', 'good.png'), (WIDTH, HEIGHT)))
 
 # ROOM CLASSES
 class MenuScreen():
@@ -358,7 +520,7 @@ class Room23():
         self.key.draw()
         self.diary.draw()
         
-        ROOM_23_FONT = pygame.font.SysFont('comicsans', 18)
+        ROOM_23_FONT = pygame.font.SysFont('arial', 20)
         display_text = ROOM_23_FONT.render("Got a clue!", 1, WHITE)
         WIN.blit(display_text, (10, 570))
         
