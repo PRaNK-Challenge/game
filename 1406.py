@@ -639,7 +639,7 @@ class Room4():
         self.open_bag = ROOM_4_OPEN_BAG
         # self.shine = ROOM_4_SHINE
         self.necklace = CollectableClue(self, 600, 355, ROOM_4_NECKLACE, 15, HEIGHT - 105)
-        self.text = Text("Well, this boy, Tom, doesn't seem to be anywhere around here. I wonder if this man has seen him...", "bottom")
+        self.text = Text("Well, Tom doesn't seem to be anywhere around here.                                   I wonder if this man has seen him...", "top")
         self.start_items = [self.drunk, self.bottle, self.bag]
         self.end_items = [self.drunk, self.bottle, self.bag, self.necklace, self.necklace.next_room_button]
         self.all_items = list(set(self.end_items + self.start_items))
@@ -692,14 +692,14 @@ class Room4():
         if self.bag.image == self.open_bag and self.drunk_talk2.sound == "":
             self.necklace.self_vis = True
             self.necklace.draw()
-            self.text = Text("It looks like a lady's necklace, why did he have it? And on the back there's an address.", "bottom")
+            self.text = Text("This looks like a lady's necklace, could it be the one Tom gave to Sara? And on the back there's an address. Why would he try to get rid of it, maybe they had a fight?", "top")
             
         if self.necklace.clicked == True and self.drunk_talk2.sound == "":
             self.necklace.collect()
             self.necklace.next_room_button.self_vis= True
             self.necklace.rect.x = self.necklace.next_x
             self.necklace.rect.y = self.necklace.next_y
-            self.text = Text("Let's go checkout that address and see if we can put some more clues together", "bottom")
+            self.text = Text("Let's go check out that address and see if he will be there.", "top")
             
         if self.necklace.next_room_button.clicked == True:
             self.next_room = True    
@@ -1259,7 +1259,7 @@ end = End()
 class GameState():
     
     def __init__(self):
-        self.state = 'room3'
+        self.state = 'room4'
         
     def menu(self):
         menu.start_screen()
