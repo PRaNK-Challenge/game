@@ -870,6 +870,7 @@ class YouLose():
         self.image = YOU_LOSE
         self.image_space = self.image.get_rect()
         self.try_again = Clickable(self, 80, 370, TRY_AGAIN)
+        self.text = Text("", "bottom")
         self.start_items = []
         self.end_items = []
         self.all_items = list(set(self.end_items + self.start_items))
@@ -1088,7 +1089,7 @@ end = End()
 class GameState():
     
     def __init__(self):
-        self.state = 'room8'
+        self.state = 'room7'
         
     def menu(self):
         menu.start_screen()
