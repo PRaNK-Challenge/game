@@ -16,7 +16,7 @@ FPS = 120
 WHITE = (255, 255, 255)
 BLACK = (0,0,0)
 TRANSPARENT = (0,0,0,0)
-ADVENTURE_FONT = pygame.font.SysFont('arial', 20)
+ADVENTURE_FONT = pygame.font.SysFont('arial', 20, italic=True)
 
 # LOAD ALL IMAGES AND SOUNDS
 # Menu files
@@ -68,7 +68,7 @@ ROOM_2_KEY = pygame.transform.scale(
     pygame.image.load(os.path.join("art", "room2", "room2_key.png")), (20, 25)
 ).convert_alpha()
 ROOM_2_DIARY = pygame.transform.scale(
-    pygame.image.load(os.path.join("art", "room2", "room2_diary.png")), (100, 70)
+    pygame.image.load(os.path.join("art", "room2", "room2_diary.png")), (70, 50)
 ).convert_alpha()
 ROOM_2_CANDLE = pygame.transform.scale(
     pygame.image.load(os.path.join("art", "room2", "room2_candle.png")), (30, 80)
@@ -439,13 +439,13 @@ class Room2():
     def __init__(self):
         self.image = ROOM_2_BACKGROUND
         self.note_zoom = ROOM_2_NOTE_ZOOM
-        self.diary = Clickable(self, 40, 355, ROOM_2_DIARY)
+        self.diary = Clickable(self, 38, 365, ROOM_2_DIARY)
         self.diary2 = CollectableClue(self, 40, 355, ROOM_2_DIARY, 15, HEIGHT - 100)
         self.twinkle = DraggableClue(self, ROOM_2_TWINKLE, 640, 552, True, area=self.diary)
         self.candle = ZoomableClue(self, 656, 243, ROOM_2_CANDLE, self.note_zoom, 150, 20)
         self.key = ROOM_2_KEY
         self.note = DraggableClue(self, ROOM_2_NOTE, 900, 490, True, area=self.candle)
-        self.text = Text("Okay, where should I be looking? Look at that poster, I've heard of magic ink notes! You hold the note over heat and the ink becomes visible! What's that note near the bin?", "bottom")
+        self.text = Text("Okay, where to look first? Hmm, those posters seems quite interesting. Oh! I've heard of magic ink before! You hold the note over heat and the ink becomes visible!", "top")
         self.start_items = [self.candle, self.diary, self.note]
         self.end_items = [self.candle, self.note, self.diary, self.diary2.next_room_button, self.twinkle]
         self.all_items = list(set(self.end_items + self.start_items))
@@ -479,7 +479,7 @@ class Room2():
         if self.twinkle.clicked == True:
             self.twinkle.image = self.key
             self.twinkle.click_and_drag()
-            self.text = Text("Aha, that looks like a diary key! Let's grab that and her diary and see what we can find out", "top")
+            self.text = Text("Aha, that looks like a diary key! Let's grab it and see what we can find out.", "top")
         
         # take the key to the diary, put both in inventory
         if self.diary.clicked == True:
@@ -491,7 +491,7 @@ class Room2():
             self.diary2.rect.x = self.diary2.next_x
             self.diary2.rect.y = self.diary2.next_y
             self.twinkle.draw()
-            self.twinkle.rect.topleft = (50, 525)
+            self.twinkle.rect.topleft = (50, 510)
             self.diary2.next_room_button.self_vis = True
          
         if self.diary2.next_room_button.clicked == True:
@@ -544,7 +544,7 @@ class Room3():
         self.daughterspeak = AudioClue(self, self.people, ROOM_3_DAUGHTER, 300, False)
         self.drawer = pygame.draw.rect(WIN, TRANSPARENT, (90,250,80,80))
         self.card = DraggableClue(self, ROOM_3_CARD, 630, 415, True, area=self.drawer)
-        self.text = Text("It seems from what she wrote in her diary I should speak to her friend... Let's see if she'll help", "bottom")
+        self.text = Text("It seems from what she wrote in her diary her friend might know something... Let's see if she'll help.", "top")
         self.start_items = [self.candle, self.people]
         self.end_items = [self.candle, self.people, self.photo, self.card, self.file, self.file.next_room_button]
         self.all_items = list(set(self.end_items + self.start_items))
@@ -570,7 +570,7 @@ class Room3():
             self.peoplespeak.sound = ""
             
         if self.peoplespeak.sound == "":
-            self.text = Text("Hmm, well they won't be much help. What did the daughter shove in the drawer just before I came in? It's locked, maybe the key card is around here...", "bottom")
+            self.text = Text("Hmm, well they won't be much help. What did the daughter shove in the drawer just before I came in? It's locked, maybe the key card is around here...", "top")
          
         # click the candle, it moves to the side
         if self.candle.clicked == True and self.peoplespeak.sound == "":
@@ -593,7 +593,7 @@ class Room3():
         
         # click the photo, goes to girl who speaks
         if self.photo.rect.topleft == (self.photo.next_x, self.photo.next_y):
-            self.text = Text("Are you sure you don't know anything?                                           Who's this boy with you in the photo?                                          And what's that file your father has?", "bottom")
+            self.text = Text("So are you sure you don't know anything at all?                                 Then who's this boy with you in the photo?                                     And what's that file your father has?", "bottom", italic=False)
             self.daughterspeak.play_sound(self.daughterspeak.item.rect.topleft)
             self.daughterspeak.sound = ""
             self.file.self_vis = True
@@ -608,7 +608,7 @@ class Room3():
         
         if self.file.rect.topleft == (self.file.next_x, self.file.next_y):
             self.file.collect()
-            self.text = Text("It seems the father collected information on this boy, Tom, as he was concerned too! Let's see if we can find that boy at that alleyway she mentioned.", "bottom")
+            self.text = Text("It looks like the father collected information on this boy, Tom, he must have been concerned too! Let's see if we can find that boy at that alleyway Emma mentioned.", "top")
         
         if self.file.next_room_button.clicked == True:
             self.next_room = True
@@ -1251,7 +1251,7 @@ end = End()
 class GameState():
     
     def __init__(self):
-        self.state = 'room2'
+        self.state = 'room3'
         
     def menu(self):
         menu.start_screen()
