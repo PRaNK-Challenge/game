@@ -91,13 +91,13 @@ ROOM_3_PEOPLE = pygame.transform.scale(
     pygame.image.load(os.path.join("art", "room3", "room3_people.png")), (380, 285)
 )
 ROOM_3_CANDLE = pygame.transform.scale(
-    pygame.image.load(os.path.join("art", "room3", "room3_candle.png")), (120, 140)
+    pygame.image.load(os.path.join("art", "room3", "room3_candle.png")), (140, 160)
 )
 ROOM_3_CARD = pygame.transform.scale(
     pygame.image.load(os.path.join("art", "room3", "room3_card.png")), (50, 40)
 )
 ROOM_3_FILE = pygame.transform.scale(
-    pygame.image.load(os.path.join("art", "room3", "room3_file.png")), (100, 100)
+    pygame.image.load(os.path.join("art", "room3", "room3_file.png")), (80, 80)
 )
 # ROOM_3_KEY = pygame.transform.scale(pygame.image.load(os.path.join("art", "room3", 'room3_key.png')), (40, 30))
 ROOM_3_PHOTO = pygame.transform.scale(
@@ -538,7 +538,7 @@ class Room3():
         self.image = ROOM_3_BACKGROUND
         self.candle = Clickable(self, 590, 350, ROOM_3_CANDLE)
         self.photo = CollectableClue(self, 70, 140, ROOM_3_PHOTO, 700, 250)
-        self.file = CollectableClue(self, 850, 280, ROOM_3_FILE, 15, HEIGHT - 100)
+        self.file = CollectableClue(self, 830, 270, ROOM_3_FILE, 15, HEIGHT - 100)
         self.people = Clickable(self, 570, 107, ROOM_3_PEOPLE)
         self.peoplespeak = AudioClue(self, self.people, ROOM_3_DAD, 1500, False, ROOM_3_MUM)
         self.daughterspeak = AudioClue(self, self.people, ROOM_3_DAUGHTER, 300, False)
@@ -593,7 +593,7 @@ class Room3():
         
         # click the photo, goes to girl who speaks
         if self.photo.rect.topleft == (self.photo.next_x, self.photo.next_y):
-            self.text = Text("So are you sure you don't know anything at all?                                 Then who's this boy with you in the photo?                                     And what's that file your father has?", "bottom", italic=False)
+            self.text = Text('"So are you sure you don\'t know anything at all?"                                "Then who\'s this boy with you in the photo?"                                     "And what\'s that file your father has?"', "bottom")
             self.daughterspeak.play_sound(self.daughterspeak.item.rect.topleft)
             self.daughterspeak.sound = ""
             self.file.self_vis = True
