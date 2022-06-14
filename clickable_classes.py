@@ -11,8 +11,8 @@ WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 WHITE = (255, 255, 255)
 BLACK = (0,0,0)
 TRANSPARENT = (0,0,0,0)
-ADVENTURE_FONT = pygame.font.SysFont('arial', 20, italic=False)
-ADVENTURE_FONT_ITALIC = pygame.font.SysFont('arial', 20, italic=True)
+ADVENTURE_FONT = pygame.font.SysFont('arial', 20, italic=True)
+ADVENTURE_FONT_NON_ITALIC = pygame.font.SysFont('arial', 20, italic=False)
 NEXT_BUTTON = pygame.transform.scale(pygame.image.load(os.path.join("art", "other",'next_button.png')), (180,120)).convert_alpha()
 TEXT_BOX = pygame.transform.scale(pygame.image.load(os.path.join("art", "other",'text_box.png')), (600, 130))
 
@@ -101,28 +101,28 @@ class Text():
         self.text = "" 
  
 
-# for putting text on screen italic
-class Text_italic():
-    def __init__(self, text_italic, blit_position):
-        self.text_italic = text_italic
+# for putting text on screen non_italic
+class Text_non_italic():
+    def __init__(self, text_non_italic, blit_position):
+        self.text_non_italic = text_non_italic
         self.self_vis = False
         self.blit_position = blit_position
         self.position = (180, 495) if self.blit_position == "bottom" else (180, 25)
-        self.place_text_italic = (155, 470) if self.blit_position == "bottom" else (155, 0)
+        self.place_text_non_italic = (155, 470) if self.blit_position == "bottom" else (155, 0)
         
     # for text over multiple lines    
-    def blit_text_italic(self):
-        if self.text_italic == "":
+    def blit_text_non_italic(self):
+        if self.text_non_italic == "":
             pass
         else:
-            WIN.blit(TEXT_BOX, self.place_text_italic)
-            words = [word.split(' ') for word in self.text_italic.splitlines()]  # 2D array where each row is a list of words.
-            space = ADVENTURE_FONT_ITALIC.size(' ')[0]  # The width of a space.
+            WIN.blit(TEXT_BOX, self.place_text_non_italic)
+            words = [word.split(' ') for word in self.text_non_italic.splitlines()]  # 2D array where each row is a list of words.
+            space = ADVENTURE_FONT_NON_ITALIC.size(' ')[0]  # The width of a space.
             max_width = 730
             x, y = self.position
             for line in words:
                 for word in line:
-                    word_surface = ADVENTURE_FONT_ITALIC.render(word, 1, BLACK)
+                    word_surface = ADVENTURE_FONT_NON_ITALIC.render(word, 1, BLACK)
                     word_width, word_height = word_surface.get_size()
                     if x + word_width >= max_width:
                         x = self.position[0]  # Reset the x.
@@ -132,8 +132,8 @@ class Text_italic():
                 x = self.position[0]  # Reset the x.
                 y += word_height  # Start on new row.
            
-    def remove_text_italic(self):
-        self.text_italic = "" 
+    def remove_text_non_italic(self):
+        self.text_non_italic = "" 
 
        
 # Parent class for drawing images on screen and checking if they've been clicked

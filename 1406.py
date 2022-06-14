@@ -1,7 +1,7 @@
 import pygame
 import os
 
-from clickable_classes import ADVENTURE_FONT_ITALIC, ADVENTURE_FONT
+from clickable_classes import ADVENTURE_FONT_NON_ITALIC, ADVENTURE_FONT
 
 #settings
 pygame.init()
@@ -12,14 +12,14 @@ WIDTH, HEIGHT = 950,600
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Private Eye")
 
-from clickable_classes import NEXT_BUTTON, redraw_window, fade_in_and_out, change_cursor, Text, Text_italic, Clickable, FadeIn, AudioClue, CollectableClue, DraggableClue, ZoomableClue
+from clickable_classes import NEXT_BUTTON, redraw_window, fade_in_and_out, change_cursor, Text, Text_non_italic, Clickable, FadeIn, AudioClue, CollectableClue, DraggableClue, ZoomableClue
 
 FPS = 120
 WHITE = (255, 255, 255)
 BLACK = (0,0,0)
 TRANSPARENT = (0,0,0,0)
-ADVENTURE_FONT = pygame.font.SysFont('arial', 20, italic=False)
-ADVENTURE_FONT_ITALIC = pygame.font.SysFont('arial', 20, italic=True)
+ADVENTURE_FONT = pygame.font.SysFont('arial', 20, italic=True)
+ADVENTURE_FONT_NON_ITALIC = pygame.font.SysFont('arial', 20, italic=False)
 
 # LOAD ALL IMAGES AND SOUNDS
 # Menu files
@@ -548,6 +548,7 @@ class Room3():
         self.drawer = pygame.draw.rect(WIN, TRANSPARENT, (90,250,80,80))
         self.card = DraggableClue(self, ROOM_3_CARD, 630, 415, True, area=self.drawer)
         self.text = Text("It seems from what she wrote in her diary her friend might know something... Let's see if she'll help.", "top")
+        self.text_non_italic = Text_non_italic("", "bottom")
         self.start_items = [self.candle, self.people]
         self.end_items = [self.candle, self.people, self.photo, self.card, self.file, self.file.next_room_button]
         self.all_items = list(set(self.end_items + self.start_items))
@@ -562,6 +563,7 @@ class Room3():
         self.file.draw()
         self.people.draw()
         self.text.blit_text()
+        self.text_non_italic.blit_text_non_italic()
         
         # cursor becomes hand when hovering over Clickable
         pos = pygame.mouse.get_pos()                    
@@ -574,7 +576,8 @@ class Room3():
             
         if self.peoplespeak.sound == "":
             self.text = Text("Hmm, well they won't be much help. What did the daughter shove in the drawer just before I came in? It's locked, maybe the key card is around here...", "top")
-         
+
+
         # click the candle, it moves to the side
         if self.candle.clicked == True and self.peoplespeak.sound == "":
             self.candle.rect.topleft = (520,350)
@@ -597,8 +600,7 @@ class Room3():
         # click the photo, goes to girl who speaks
         if self.photo.rect.topleft == (self.photo.next_x, self.photo.next_y):
             self.text = Text("", "top")
-            self.text_italic = Text_italic('"So are you sure you don\'t know anything at all?"                                "Then who\'s this boy with you in the photo?"                                     "And what\'s that file your father has?"', "bottom")
-            self.text_italic.blit_text_italic()
+            self.text_non_italic = Text_non_italic('"So are you sure you don\'t know anything at all?"                                "Then who\'s this boy with you in the photo?"                                     "And what\'s that file your father has?"', "bottom")
             self.daughterspeak.play_sound(self.daughterspeak.item.rect.topleft)
             self.daughterspeak.sound = ""
             self.file.self_vis = True
@@ -612,10 +614,10 @@ class Room3():
             #self.file.draw()
         
         if self.file.rect.topleft == (self.file.next_x, self.file.next_y):
-            self.text_italic = Text_italic("", "bottom") #why u no work? >:(
             self.file.collect()
             self.text = Text("It looks like the father collected information on this boy, Tom, he must have been concerned too! Let's see if we can find that boy at that alleyway Emma mentioned.", "top")
-        
+            self.text_non_italic.remove_text_non_italic()
+
         if self.file.next_room_button.clicked == True:
             self.next_room = True
     
