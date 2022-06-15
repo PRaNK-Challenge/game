@@ -1539,7 +1539,7 @@ end = End()
 # decided which room to play and how to move between rooms
 class GameState:
     def __init__(self):
-        self.state = "room7"
+        self.state = "room8"
 
     def menu(self):
         menu.start_screen()
