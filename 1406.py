@@ -1352,7 +1352,7 @@ class Room8:
             "Just like in the notes, Sara's mother owns this land, and someone seems to be inside that shed! I need to hurry!",
             "top",
         )
-        self.text_non_italic = Text_non_italic("hello", "bottom")
+        self.text_non_italic = Text_non_italic("", "bottom")
         self.start_items = [
             self.plank1,
             self.plank2,
@@ -1391,6 +1391,7 @@ class Room8:
         change_cursor(self.all_items, pos)
 
         self.text.blit_text()
+        self.text_non_italic.blit_text_non_italic()
 
         # stick 1 logic
         if self.stick1.area.rect.collidepoint(pos) and self.stick1.clicked == True:
