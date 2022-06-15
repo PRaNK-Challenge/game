@@ -301,7 +301,7 @@ ROOM_8_BACKGROUND = pygame.transform.scale(
     pygame.image.load(os.path.join("art", "room8", "room8.png")), (WIDTH, HEIGHT)
 )
 ROOM_8_PLANK1 = pygame.transform.scale(
-    pygame.image.load(os.path.join("art", "room8", "plank18.png")), (200, 140)
+    pygame.image.load(os.path.join("art", "room8", "plank18.png")), (200, 120)
 )
 ROOM_8_PLANK2 = pygame.transform.scale(
     pygame.image.load(os.path.join("art", "room8", "plank28.png")), (200, 130)
@@ -1304,7 +1304,7 @@ class Room8:
         )
         self.lock = Clickable(self, 386, 268, ROOM_8_LOCK)
         self.key = DraggableClue(self, ROOM_8_KEY, 261, 189, True, area=self.lock)
-        self.tree = Clickable(self, 242, 183, ROOM_8_TREE)
+        self.tree = Clickable(self, 239, 179, ROOM_8_TREE) #230, 170
         self.grass1 = Clickable(self, 630, 530, ROOM_8_GRASS1)
         self.grass2 = Clickable(self, 380, 540, ROOM_8_GRASS2)
         self.plank_hit = DraggableClue(self, ROOM_8_PLANK2, 506, 482, True)
@@ -1374,7 +1374,7 @@ class Room8:
 
     def play_room(self):
         WIN.blit(self.image, (0, 0))
-        WIN.blit(self.tree.image, (242, 183))
+        WIN.blit(self.tree.image, (239, 179))
 
         self.lock.draw()
         self.plank1.draw()
