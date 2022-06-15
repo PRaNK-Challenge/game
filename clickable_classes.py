@@ -13,9 +13,9 @@ BLACK = (0,0,0)
 TRANSPARENT = (0,0,0,0)
 ADVENTURE_FONT = pygame.font.SysFont('arial', 20, italic=True)
 ADVENTURE_FONT_NON_ITALIC = pygame.font.SysFont('arial', 20, italic=False)
-NEXT_BUTTON = pygame.transform.scale(pygame.image.load('next_button.png'), (180,120)).convert_alpha()
-TEXT_BOX = pygame.transform.scale(pygame.image.load('text_box.png'), (600, 130))
-SPEECH_BOX = pygame.transform.scale(pygame.image.load('text_box.png'), (600, 130))
+NEXT_BUTTON = pygame.transform.scale(pygame.image.load(os.path.join("art", "other",'next_button.png')), (180,120)).convert_alpha()
+TEXT_BOX = pygame.transform.scale(pygame.image.load(os.path.join("art", "other",'text_box.png')), (600, 130))
+SPEECH_BOX = pygame.transform.scale(pygame.image.load(os.path.join("art", "other",'text_box.png')), (600, 130))
 
 # HELPER FUNCTIONS
 # to help fade between scenes, used by rooms and items, change to what's visible at beginning
