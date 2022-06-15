@@ -1,4 +1,5 @@
 import pygame
+import os
 
 pygame.init()
 pygame.font.init()
@@ -10,9 +11,11 @@ WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 WHITE = (255, 255, 255)
 BLACK = (0,0,0)
 TRANSPARENT = (0,0,0,0)
-ADVENTURE_FONT = pygame.font.SysFont('comicsans', 18)
-NEXT_BUTTON = pygame.transform.scale(pygame.image.load('next_button.png'), (230,150)).convert_alpha()
+ADVENTURE_FONT = pygame.font.SysFont('arial', 20, italic=True)
+ADVENTURE_FONT_NON_ITALIC = pygame.font.SysFont('arial', 20, italic=False)
+NEXT_BUTTON = pygame.transform.scale(pygame.image.load('next_button.png'), (180,120)).convert_alpha()
 TEXT_BOX = pygame.transform.scale(pygame.image.load('text_box.png'), (600, 130))
+SPEECH_BOX = pygame.transform.scale(pygame.image.load('text_box.png'), (600, 130))
 
 # HELPER FUNCTIONS
 # to help fade between scenes, used by rooms and items, change to what's visible at beginning
@@ -66,26 +69,29 @@ def change_cursor(items, pos):
 # CLASSES               
 # for putting text on screen
 class Text():
-    def __init__(self, text, blit_position):
+    def __init__(self, text, blit_position, italics):
         self.text = text
         self.self_vis = False
         self.blit_position = blit_position
         self.position = (180, 495) if self.blit_position == "bottom" else (180, 25)
         self.place_text = (155, 470) if self.blit_position == "bottom" else (155, 0)
+        self.italics = italics
+        self.font = ADVENTURE_FONT if self.italics else ADVENTURE_FONT_NON_ITALIC
         
     # for text over multiple lines    
     def blit_text(self):
         if self.text == "":
             pass
         else:
-            WIN.blit(TEXT_BOX, self.place_text)
+            box = TEXT_BOX if self.blit_position == "top" else SPEECH_BOX
+            WIN.blit(box, self.place_text)
             words = [word.split(' ') for word in self.text.splitlines()]  # 2D array where each row is a list of words.
-            space = ADVENTURE_FONT.size(' ')[0]  # The width of a space.
+            space = self.font.size(' ')[0]  # The width of a space.
             max_width = 730
             x, y = self.position
             for line in words:
                 for word in line:
-                    word_surface = ADVENTURE_FONT.render(word, 1, BLACK)
+                    word_surface = self.font.render(word, 1, BLACK)
                     word_width, word_height = word_surface.get_size()
                     if x + word_width >= max_width:
                         x = self.position[0]  # Reset the x.
@@ -96,9 +102,9 @@ class Text():
                 y += word_height  # Start on new row.
            
     def remove_text(self):
-        self.text = "" 
- 
-       
+        self.text = ""  
+
+      
 # Parent class for drawing images on screen and checking if they've been clicked
 class Clickable():
     def __init__(self, room, x, y, image=""):
@@ -127,6 +133,7 @@ class FadeIn(Clickable):
     def __init__(self, room, x, y, image, extra_current_items=[], extra_current_items2=[]):
         super().__init__(room, x, y, image)
         self.show_fader = False
+        self.gone = False
         self.self_vis = False
         self.extra_current_items = extra_current_items
         self.extra_current_items2 = extra_current_items2
@@ -153,7 +160,9 @@ class FadeIn(Clickable):
                 self.image.set_alpha(256-alpha)
                 redraw_window(self.room, current_items)
                 WIN.blit(self.image, (self.rect.topleft))
-                pygame.display.update()        
+                pygame.display.update()
+            if 256-alpha == 1:
+                self.gone = True
 
 
 # Audio clue that can trigger a function if needed
@@ -190,33 +199,31 @@ class AudioClue():
             else:
                 self.func()
 
-    def play_sound(self, topleft):        
-        # this will stop the sound playing more than once
-
+    def play_sound(self):        
+        
         if self.sound != "":
-            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
-            if self.item.rect.collidepoint(topleft) and pygame.mouse.get_pressed()[0] and self.item.rect.topleft == topleft:           
-                if self.second_sound == "":
-                    pygame.time.delay(self.pause)
-                    self.sound.play()
+            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)         
+            if self.second_sound == "":
+                pygame.time.delay(self.pause)
+                self.sound.play()
+                self.carry_out_func()
+            else:
+                self.sound.play()
+                pygame.time.delay(self.pause + 2000)
+                self.second_sound.play()
+                pygame.time.delay(self.second_sound_length + 3000)
+                if self.repeat == True:
                     self.carry_out_func()
+                    
+                if self.third_sound == "":
+                    pass
                 else:
-                    self.sound.play()
-                    pygame.time.delay(self.pause + 2000)
-                    self.second_sound.play()
-                    pygame.time.delay(self.second_sound_length + 3000)
-                    if self.repeat == True:
-                        self.carry_out_func()
-                        
-                    if self.third_sound == "":
-                        pass
-                    else:
-                        pygame.time.delay(self.second_sound_length + 13500)
-                        self.third_sound.play()
-                        pygame.time.delay(self.third_sound_length + 3000)
-                        self.carry_out_func()
-                        if self.fourth_sound != "":
-                            self.fourth_sound.play()
+                    pygame.time.delay(self.second_sound_length + 13500)
+                    self.third_sound.play()
+                    pygame.time.delay(self.third_sound_length + 3000)
+                    self.carry_out_func()
+                    if self.fourth_sound != "":
+                        self.fourth_sound.play()
    
          
 # A clickable item that can be collected, final clue before next room
