@@ -1349,9 +1349,10 @@ class Room8:
             func=self.mother.fade_out,
         )
         self.text = Text(
-            "Just like in the notes, Sara's mother owns this land, and someone seems to be inside that shed!",
+            "Just like in the notes, Sara's mother owns this land, and someone seems to be inside that shed! I need to hurry!",
             "top",
         )
+        self.text_non_italic = Text_non_italic("hello", "bottom")
         self.start_items = [
             self.plank1,
             self.plank2,
@@ -1482,7 +1483,7 @@ class Room8:
             WIN.blit(self.mother.image, (133, 199))
             self.mother_speak.play_sound((133, 199))
             self.mother_speak.sound = ""
-
+        
         if (
             self.plank_hit.rect.colliderect(self.mother)
             and pygame.mouse.get_pressed()[0]
@@ -1495,7 +1496,7 @@ class Room8:
             self.plank_hit_mother.play_sound((560, 300))
             self.plank_hit_mother.sound = ""
             # trying to find a way to keep text on screen longer
-            self.text.text = "WOOHOOOO!"
+            self.text = Text('"You\'re safe now, everything will be fine. Let me ring the ambulance for your mother."', "bottom")
             pygame.time.delay(3000)
             self.end_screen = True
 
