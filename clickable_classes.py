@@ -14,8 +14,8 @@ TRANSPARENT = (0,0,0,0)
 ADVENTURE_FONT = pygame.font.SysFont('arial', 18, italic=True)
 ADVENTURE_FONT_NON_ITALIC = pygame.font.SysFont('arial', 18, italic=False)
 NEXT_BUTTON = pygame.transform.scale(pygame.image.load(os.path.join("art", "other",'next_button.png')), (130,90)).convert_alpha()
-TEXT_BOX = pygame.transform.scale(pygame.image.load(os.path.join("art", "other",'text_box.png')), (600, 130))
-SPEECH_BOX = pygame.transform.scale(pygame.image.load(os.path.join("art", "other",'text_box.png')), (600, 130))
+TEXT_BOX_SPEAK = pygame.transform.scale(pygame.image.load(os.path.join("art", "other",'text_box_speak.png')), (600, 130))
+TEXT_BOX_THINK = pygame.transform.scale(pygame.image.load(os.path.join("art", "other",'text_box.png')), (600, 130))
 
 # HELPER FUNCTIONS
 # to help fade between scenes, used by rooms and items, change to what's visible at beginning
@@ -84,7 +84,7 @@ class Text():
         if self.text == "":
             pass
         else:
-            box = TEXT_BOX if self.blit_position == "top" else SPEECH_BOX
+            box = TEXT_BOX_THINK if self.blit_position == "top" else TEXT_BOX_SPEAK
             WIN.blit(box, self.place_text)
             words = [word.split(' ') for word in self.text.splitlines()]  # 2D array where each row is a list of words.
             space = self.font.size(' ')[0]  # The width of a space.
