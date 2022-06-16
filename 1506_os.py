@@ -31,7 +31,7 @@ ROOM_1_BACKGROUND = pygame.transform.scale(
     pygame.image.load(os.path.join("art", "room1", "room1.png")), (WIDTH, HEIGHT)
 )
 ROOM_1_PHONE = pygame.transform.scale(
-    pygame.image.load(os.path.join("art", "room1", "room1_phone.png")), (100, 80)
+    pygame.image.load(os.path.join("art", "room1", "room1_phone.png")), (105, 90)
 )
 ROOM_1_TISSUES = pygame.transform.scale(
     pygame.image.load(os.path.join("art", "room1", "room1_tissues.png")), (75, 90)
@@ -48,10 +48,11 @@ ROOM_1_FOLDER = pygame.transform.scale(
 # Room 1 sounds
 ROOM_1_MOTHER_SPEAK = pygame.mixer.Sound(os.path.join("sounds", "room1_woman.mp3"))
 ROOM_1_MAN = pygame.mixer.Sound(os.path.join("sounds", "room1_man.mp3"))
-ROOM_1_PHONE_SOUND = pygame.mixer.Sound(os.path.join("sounds", "phone-ringing.mp3"))
-ROOM_1_PHONE_PICKUP = pygame.mixer.Sound(os.path.join("sounds", "phone_pick_up.mp3"))
-ROOM_1_DOOR_KNOCK = pygame.mixer.Sound(os.path.join("sounds", "door_knock.mp3"))
+ROOM_1_PHONE_SOUND = pygame.mixer.Sound(os.path.join("sounds", "room_1_phone_ringing.mp3"))
+ROOM_1_PHONE_PICKUP = pygame.mixer.Sound(os.path.join("sounds", "room_1_phone_pick_up.mp3"))
+ROOM_1_DOOR_KNOCK = pygame.mixer.Sound(os.path.join("sounds", "room_1_door_knock.mp3"))
 ROOM_1_CRYING = pygame.mixer.Sound(os.path.join("sounds", "room1_crying.mp3"))
+ROOM_1_DRAWER = pygame.mixer.Sound(os.path.join("sounds", "room_1_drawer_sound.mp3"))
 
 # Room 2 images
 ROOM_2_BACKGROUND = pygame.transform.scale(
@@ -186,7 +187,7 @@ ROOM_6_VIP_MAN = pygame.transform.scale(
     pygame.image.load(os.path.join("art", "room6", "room6_vip_man.png")), (80, 250)
 )
 ROOM_6_VIP_MAN_END = pygame.transform.scale(
-    pygame.image.load(os.path.join("art", "room6", "room6_vip_man_end.png")), (80, 250)
+    pygame.image.load(os.path.join("art", "room6", "room6_vip_man_end.png")), (79, 248)
 )
 ROOM_6_GANG = pygame.transform.scale(
     pygame.image.load(os.path.join("art", "room6", "room6_thugs.png")), (350, 270)
@@ -197,7 +198,7 @@ ROOM_6_BOUNCER = pygame.transform.scale(
 )
 ROOM_6_BOUNCER_VIP = pygame.transform.scale(
     pygame.image.load(os.path.join("art", "room6", "room6_bouncer_vip.png")),
-    (250, HEIGHT - 20),
+    (249, HEIGHT - 25),
 )
 ROOM_6_BAT = pygame.transform.scale(
     pygame.image.load(os.path.join("art", "room6", "room6_bat.png")), (65, 120)
@@ -255,7 +256,7 @@ ROOM_7_DIARY_ZOOM = pygame.transform.scale(
     pygame.image.load(os.path.join("art", "room7", "diaryzoom7.png")), (550, 400)
 )
 ROOM_7_FILE = pygame.transform.scale(
-    pygame.image.load(os.path.join("art", "room7", "room3_file.png")), (80, 80)
+    pygame.image.load(os.path.join("art", "room7", "room3_file.png")), (95, 95)
 )
 ROOM_7_FILE_ZOOM = pygame.transform.scale(
     pygame.image.load(os.path.join("art", "room7", "file_zoom7.png")), (450, 450)
@@ -316,7 +317,7 @@ ROOM_8_MOTHER = pygame.transform.scale(
     pygame.image.load(os.path.join("art", "room8", "mother8.png")), (250, 550)
 )
 ROOM_8_MOTHER_HIT = pygame.transform.scale(
-    pygame.image.load(os.path.join("art", "room8", "mother_hit8.png")), (353, 563)
+    pygame.image.load(os.path.join("art", "room8", "mother_hit8.png")), (350, 563)
 )
 ROOM_8_GIRL = pygame.transform.scale(
     pygame.image.load(os.path.join("art", "room8", "daughter8.png")), (200, 400)
@@ -337,7 +338,7 @@ ROOM_8_PLANK_HIT_SOUND = pygame.mixer.Sound(os.path.join("sounds", "room8_hit.mp
 ROOM_8_WOOD_SNAP = pygame.mixer.Sound(os.path.join("sounds", "room8_wood_snap.mp3"))
 
 # Ending images
-END = pygame.transform.scale(pygame.image.load('good.png'), (WIDTH, HEIGHT))
+END = pygame.transform.scale(pygame.image.load(os.path.join("art", "goodend",'good.png')), (WIDTH, HEIGHT))
 # Ending Sounds
 END_SUCCESS = pygame.mixer.Sound(os.path.join("sounds", 'end_success.wav'))
 
@@ -354,7 +355,7 @@ class MenuScreen():
 
         WIN.blit(self.image, (0,0))
         
-        pygame.mixer.music.load("menu_music.mp3")
+        pygame.mixer.music.load(os.path.join("sounds", "menu_music.mp3"))
         pygame.mixer.music.set_volume(0.1)
         pygame.mixer.music.play(loops=-1)
         
@@ -369,7 +370,7 @@ class Room1():
         self.drawer = pygame.draw.rect(WIN, TRANSPARENT, (320,570,50,50))
         self.folder = CollectableClue(self, 246, 409, ROOM_1_FOLDER, 15, HEIGHT - 100)
         self.mother = FadeIn(self, 105, 132, ROOM_1_MOTHER)
-        self.phone = Clickable(self, 620, 290, ROOM_1_PHONE)
+        self.phone = Clickable(self, 630, 300, ROOM_1_PHONE)
         self.phone_call = AudioClue(self, self.phone, ROOM_1_PHONE_PICKUP, 1000, False, ROOM_1_MAN, ROOM_1_DOOR_KNOCK, self.mother.fade_in, fourth_sound=ROOM_1_CRYING)
         self.tissues = Clickable(self, 361, 317, ROOM_1_TISSUES)
         self.mother_speech = AudioClue(self, self.tissues, ROOM_1_MOTHER_SPEAK, 100, False)
@@ -421,7 +422,7 @@ class Room1():
         
         # key is revealed, can be moved
         if self.phone.clicked == True and self.tissues.clicked == True:
-            self.text = Text("Oh good, that seems to have helped her. Now we can hear more about the case.                                                                                           And ah! There's the key to the drawer! Let's get that casefile.", "top", True)
+            self.text = Text("Oh good, that seems to have helped her. Now we can hear more about the case. And ah! There's the key to the drawer! Let's get that casefile.", "top", True)
             self.key.draw()
             if isinstance(self.key, DraggableClue):
                 self.key.click_and_drag()
@@ -458,7 +459,7 @@ class Room2():
         self.image = ROOM_2_BACKGROUND
         self.note_zoom = ROOM_2_NOTE_ZOOM
         self.diary = Clickable(self, 38, 365, ROOM_2_DIARY)
-        self.diary2 = CollectableClue(self, 40, 355, ROOM_2_DIARY, 15, HEIGHT - 100)
+        self.diary2 = CollectableClue(self, 38, 365, ROOM_2_DIARY, 15, HEIGHT - 100)
         self.twinkle = DraggableClue(self, ROOM_2_TWINKLE, 640, 552, True, area=self.diary)
         self.candle = ZoomableClue(self, 656, 243, ROOM_2_CANDLE, self.note_zoom, 150, 20)
         self.key = ROOM_2_KEY
@@ -540,8 +541,7 @@ class Room23():
         self.key.draw()
         self.diary.draw()
         
-        ROOM_23_FONT = pygame.font.SysFont('arial', 20)
-        display_text = ROOM_23_FONT.render("Got a clue!", 1, WHITE)
+        display_text = ADVENTURE_FONT.render("Got a clue!", 1, WHITE)
         WIN.blit(display_text, (10, 570))
         
         # cursor becomes hand when hovering over Clickable
@@ -557,7 +557,7 @@ class Room3():
     def __init__(self):
         self.image = ROOM_3_BACKGROUND
         self.candle = Clickable(self, 590, 350, ROOM_3_CANDLE)
-        self.photo = CollectableClue(self, 70, 140, ROOM_3_PHOTO, 700, 250)
+        self.photo = CollectableClue(self, 70, 140, ROOM_3_PHOTO, 700, 255)
         self.file = CollectableClue(self, 815, 280, ROOM_3_FILE, 15, HEIGHT - 100)
         self.people = Clickable(self, 570, 146, ROOM_3_PEOPLE)
         self.peoplespeak = AudioClue(self, self.people, ROOM_3_DAD, 1500, False, ROOM_3_MUM)
@@ -634,7 +634,7 @@ class Room3():
         
         if self.file.rect.topleft == (self.file.next_x, self.file.next_y):
             self.file.collect()
-            self.text = Text("It seems the father collected information on this boy, Tom, as he was concerned too! Let's see if we can find that boy at that alleyway Emma mentioned.", "top", True)
+            self.text = Text("It seems the father collected information on this boy, Tom, as he was concerned too! Let's see if we can find that boy near that alleyway Emma mentioned.", "top", True)
         
         if self.file.next_room_button.clicked == True:
             self.next_room = True
@@ -650,7 +650,7 @@ class Room4():
         self.drunk_head = pygame.draw.rect(WIN, TRANSPARENT, (300,250,50,50))
         self.drunk_talk2 = AudioClue(self, self.drunk, ROOM_4_DRUNK_TALK2, 500, False)
         self.water = Clickable(self, 898, 415, ROOM_4_WATER)
-        self.water_run = AudioClue(self, self.drunk, ROOM_4_WATER_RUN, 200, False)
+        self.water_run = AudioClue(self, self.drunk, ROOM_4_WATER_RUN, 500, False)
         self.bottle = DraggableClue(self, ROOM_4_BOTTLE, 70, 480, True, area=self.water)
         self.full_bottle = ROOM_4_FULL_BOTTLE
         self.bag = Clickable(self, 543, 170, ROOM_4_BAG)
@@ -736,15 +736,15 @@ class Room5():
         self.rock = DraggableClue(self, ROOM_5_ROCK, 640, 455, True, area=self.lock)
         self.rock_end = Clickable(self, 640, 455, ROOM_5_ROCK)
         self.keyhole = Clickable(self, 585, 200, ROOM_5_KEYHOLE)
-        self.key = DraggableClue(self, ROOM_5_KEY, 700, 460, True, area= self.keyhole)
-        self.key_end = Clickable(self, 720, 465, ROOM_5_KEY)
+        self.key = DraggableClue(self, ROOM_5_KEY, 720, 460, True, area= self.keyhole)
+        self.key_end = Clickable(self, 720, 460, ROOM_5_KEY)
         self.car = AudioClue(self, self.keyhole, ROOM_5_CAR2, 0, True, ROOM_5_CAR, func=self.man.fade_in)
         self.smash = AudioClue(self, self.lock, ROOM_5_SMASH, 50, True)
         self.poster = CollectableClue(self, 350, 5, ROOM_5_NOTE, 25, HEIGHT - 115, size=(55, 80))
         self.lock_space = pygame.draw.rect(WIN, TRANSPARENT, (238,200,30,30))
         self.text = Text("Looks like there's no one home. Nothing wrong with having a little look around though. Might be worth trying to get some clues before anyone comes home.", "top", True)
         self.start_items = [self.key, self.plant, self.lock, self.rock, self.keyhole]
-        self.end_items = [self.plant, self.rock_end, self.keyhole, self.key_end, self.poster, self.poster.next_room_button]
+        self.end_items = [self.plant, self.rock_end, self.keyhole, self.poster, self.poster.next_room_button]
         self.current_items = [self.plant, self.rock, self.keyhole, self.key, self.lock]
         self.all_items = list(set(self.end_items + self.start_items + self.current_items))
         self.has_collectable = True
@@ -773,7 +773,9 @@ class Room5():
         
         # father arrives home as you try to enter
         if self.key.rect.colliderect(self.keyhole):
-            self.key = Clickable(self, 720, 465, ROOM_5_KEY)
+            self.key = Clickable(self, 720, 460, ROOM_5_KEY)
+            self.key.image = ""
+            self.key.self_vis = False
             self.car.play_sound()
             self.car.sound = ""
             self.man_speak.play_sound()
@@ -791,12 +793,16 @@ class Room5():
         # grab rock, smash lock
         if self.rock.rect.colliderect(self.lock):
             self.rock = Clickable(self, 640, 455, ROOM_5_ROCK)
-            self.rock.rect.topleft = (640, 455)
+            self.rock.image = ""
+            self.rock.self_vis = False
             self.smash.play_sound()
             self.smash.sound = ""
             self.lock.image = ""
             self.text.remove_text()
         
+        if self.rock.image == "" and self.rock.self_vis == False:
+            WIN.blit(ROOM_5_ROCK, (640, 455))
+
         # collect the poster clue
         if self.lock.image == "":    
             self.poster.draw()
@@ -808,7 +814,7 @@ class Room5():
         
         if self.poster.clicked == True:
             self.poster.collect()
-            self.rock.rect.topleft = (640, 455)
+            self.rock.rect.topleft = (640, 405)
             self.poster.next_room_button.self_vis = True
             self.poster.rect.x = self.poster.next_x
             self.poster.rect.y = self.poster.next_y
@@ -836,7 +842,7 @@ class Room6():
         self.vip_man_speak = AudioClue(self, self.vip_man, ROOM_6_VIP_MAN_SPEAK, 0, True)
         self.gang_speak = AudioClue(self, self.gang, ROOM_6_GANG_SPEAK, 0, True)
         self.text = Text('"Hey, the bouncer won\'t let me through? Those guys are my friends from the club. Do you have a spare VIP ticket by any chance?"', "bottom", False)
-        self.next_room_button = Clickable(self, WIDTH - 200, HEIGHT - 150, NEXT_BUTTON)
+        self.next_room_button = Clickable(self, 815, 490, NEXT_BUTTON)
         self.start_items =[self.vip_man, self.gang, self.rope, self.bouncer, self.drink, self.window, self.bat]
         self.end_items =[self.vip_man, self.window, self.gang, self.bat_end, self.next_room_button]
         self.current_items = [self.vip_man, self.window, self.bat, self.gang, self.rope]
@@ -950,14 +956,14 @@ class Room7():
         self.diary_zoom = CollectableClue(self, 180, 30, ROOM_7_DIARY_ZOOM, 0, 0)
         self.poster = Clickable(self, 420, 370, ROOM_7_POSTER)
         self.poster_zoom = CollectableClue(self, 290, 30, ROOM_7_POSTER_ZOOM, 0, 0)
-        self.file = Clickable(self, 200, 390, ROOM_3_FILE)
+        self.file = Clickable(self, 196, 386, ROOM_7_FILE)
         self.file_zoom = CollectableClue(self, 260, 10, ROOM_7_FILE_ZOOM, 0, 0)
-        self.necklace_text = Text('"Tom gave her a necklace with his address on it, who knows why he\'d want her to go there, seems like he had a rough family dynamic. But why would he have it, just to throw it away?"', "bottom", True)
-        self.file_text = Text("\"Her friend's father was gathering information on Tom which is a bit much, but seems like he didn't actually find a lot to be worried about, he's just a kid.\"", "bottom", True)
-        self.photo_text = Text('"So, we know she was friends with Tom, but all the parents thought he was trouble."', "bottom", True)
-        self.poster_text = Text("\"We didn't find him at the club with his gang, which could be a good sign. But it seems he ran with a rough crowd, I wouldn't trust them.\"", "bottom", True)
-        self.diary_text = Text('"We know from her diary her mother was overprotective of her and would do anything to keep her away from Tom."', "bottom", True)
-        self.final_text = Text('"Now that I\'m looking at all of this, I think I have a good idea of who might know where Sara is!"', "bottom", True)
+        self.necklace_text = Text('"Tom gave her a necklace with his address on it, who knows why he\'d want her to go there, seems like he had a rough family dynamic. But why would he have it, just to throw it away?"', "bottom", False)
+        self.file_text = Text("\"Her friend's father was gathering information on Tom which is a bit much, but seems like he didn't actually find a lot to be worried about, he's just a kid.\"", "bottom", False)
+        self.photo_text = Text('"So, we know she was friends with Tom, but all the parents thought he was trouble."', "bottom", False)
+        self.poster_text = Text("\"We didn't find him at the club with his gang, which could be a good sign. But it seems he ran with a rough crowd, I wouldn't trust them.\"", "bottom", False)
+        self.diary_text = Text('"We know from her diary her mother was overprotective of her and would do anything to keep her away from Tom."', "bottom", False)
+        self.final_text = Text('"Now that I\'m looking at all of this, I think I have a good idea of who might know where Sara is!"', "bottom", False)
         self.text = Text("", "bottom", False)
         self.guess1 = Clickable(self, 160, 30, GUESS_BOX)
         self.guess2 = Clickable(self, 500, 30, GUESS_BOX)
@@ -979,7 +985,7 @@ class Room7():
         self.photo.draw()
         self.diary.draw()
         self.file.draw()
-        WIN.blit(self.folder.image, (270, 440))
+        WIN.blit(self.folder.image, (290, 420))
         
         pos = pygame.mouse.get_pos()                    
         # allows changing the cursor only for images before the final guesses
@@ -1038,10 +1044,10 @@ class Room7():
                 WIN.blit(guess2, (550, 90))
                 guess3 = ADVENTURE_FONT_NON_ITALIC.render(
                             "The Girl's Mother", 1, BLACK)
-                WIN.blit(guess3, (200, 230))
+                WIN.blit(guess3, (210, 230))
                 guess4 = ADVENTURE_FONT_NON_ITALIC.render(
                             "The Friend's Parents", 1, BLACK)
-                WIN.blit(guess4, (540, 230))
+                WIN.blit(guess4, (550, 230))
                 change_cursor(self.guesses, pos)
                 
                 # you lose screen
@@ -1112,12 +1118,12 @@ class Room8:
         self.mother_head = pygame.draw.rect(WIN, TRANSPARENT, (200,200,150,150))
         self.plank_hit = DraggableClue(self, ROOM_8_PLANK1, 506, 482, True, area=self.mother)
         self.lock_sound = AudioClue(self, self.lock, ROOM_8_KEY_LOCK, 500, False, func=self.girl.fade_in)
-        self.girl_speak = AudioClue(self, self.girl, ROOM_8_GIRL_SPEAK, 3500, False, func=self.mother.fade_in, func_pause=True)
+        self.girl_speak = AudioClue(self, self.girl, ROOM_8_GIRL_SPEAK, 4500, False, func=self.mother.fade_in, func_pause=True)
         self.mother_speak = AudioClue(self, self.mother, ROOM_8_MOTHER_SPEAK, 4000, False)
         self.wood_snap = AudioClue(self, self.tree, ROOM_8_WOOD_SNAP, 50, False)
         self.plank_hit_mother = AudioClue(self, self.girl, ROOM_8_PLANK_HIT_SOUND, 0, False, func=self.mother.fade_out)
         self.girl_speak2 = AudioClue(self, self.girl, ROOM_8_GIRL_SPEAK2, 500, False)
-        self.text = Text("So her mother wanted to keep her away from Tom and frame him for the kidnapping! And just like in the notes, Sara's mother owns this land, and someone seems to be inside that shed! I need to hurry!", "top", True)
+        self.text = Text("So her mother wanted to keep her away from Tom and frame him for the kidnapping! The notes said Sara's mother owns this land, and someone seems to be inside that shed! I need to hurry!", "top", True)
         self.start_items = [self.plank1, self.plank2, self.plank3, self.stick1, self.stick2, self.stick3, self.lock, self.grass1, self.grass2]
         self.end_items = [self.girl, self.plank_hit]
         self.current_items = [self.girl, self.tree, self.key]
@@ -1235,7 +1241,7 @@ class Room8:
             self.plank_hit.image = ""
             self.plank_hit.self_vis = False
             self.mother.image = ROOM_8_MOTHER_HIT
-            self.mother.rect.topleft = (132, 185)
+            self.mother.rect.topleft = (135, 180)
             self.plank_hit_mother.play_sound()
             self.plank_hit_mother.sound = ""
             self.plank_hit.image = ""
@@ -1294,7 +1300,7 @@ end = End()
 class GameState():
     
     def __init__(self):
-        self.state = 'room8'
+        self.state = 'room5'
         
     def menu(self):
         menu.start_screen()
@@ -1378,6 +1384,7 @@ class GameState():
         room8.play_room()
         
         if room8.end_screen == True:
+            pygame.time.delay(3000)
             fade_in_and_out(WIDTH, HEIGHT, 'room8', self, room8, end)
             self.state = 'end'
 

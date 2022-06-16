@@ -11,9 +11,9 @@ WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 WHITE = (255, 255, 255)
 BLACK = (0,0,0)
 TRANSPARENT = (0,0,0,0)
-ADVENTURE_FONT = pygame.font.SysFont('arial', 20, italic=True)
-ADVENTURE_FONT_NON_ITALIC = pygame.font.SysFont('arial', 20, italic=False)
-NEXT_BUTTON = pygame.transform.scale(pygame.image.load(os.path.join("art", "other",'next_button.png')), (180,120)).convert_alpha()
+ADVENTURE_FONT = pygame.font.SysFont('arial', 18, italic=True)
+ADVENTURE_FONT_NON_ITALIC = pygame.font.SysFont('arial', 18, italic=False)
+NEXT_BUTTON = pygame.transform.scale(pygame.image.load(os.path.join("art", "other",'next_button.png')), (130,90)).convert_alpha()
 TEXT_BOX = pygame.transform.scale(pygame.image.load(os.path.join("art", "other",'text_box.png')), (600, 130))
 SPEECH_BOX = pygame.transform.scale(pygame.image.load(os.path.join("art", "other",'text_box.png')), (600, 130))
 
@@ -21,6 +21,7 @@ SPEECH_BOX = pygame.transform.scale(pygame.image.load(os.path.join("art", "other
 # to help fade between scenes, used by rooms and items, change to what's visible at beginning
 def redraw_window(room, items, next_room="", show_got_clue=""):
     WIN.blit(room.image, (0,0))
+
     for item in items:
         if item.self_vis == True:
             WIN.blit(item.image, (item.rect.topleft))     
@@ -46,7 +47,7 @@ def fade_in_and_out(width, height, state, room, current_room, next_room):
         redraw_window(current_room, current_room.end_items, "next_room", show_got_clue = True)
         WIN.blit(fade, (0,0))
         pygame.display.update()
-        pygame.time.delay(1)
+        #pygame.time.delay(1)
         
     # change to next room    
     room.state = state
@@ -56,7 +57,7 @@ def fade_in_and_out(width, height, state, room, current_room, next_room):
         redraw_window(next_room, next_room.start_items, show_got_clue = False)
         WIN.blit(fade, (0,0))
         pygame.display.update()
-        pygame.time.delay(1)
+        #pygame.time.delay(1)
 
 # change the look of the cursor when hovering over an item that could be clicked
 def change_cursor(items, pos):
@@ -230,7 +231,7 @@ class AudioClue():
 class CollectableClue(Clickable):
     def __init__(self, room, x, y, image, next_x, next_y, size= ""):
         super().__init__(room, x, y, image)
-        self.next_room_button = Clickable(room, WIDTH - 200, HEIGHT - 150, NEXT_BUTTON)  
+        self.next_room_button = Clickable(room, 815, 490, NEXT_BUTTON)  
         self.next_room_button.self_vis = False
         self.next_x = next_x
         self.next_y = next_y
