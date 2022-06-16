@@ -1300,7 +1300,7 @@ end = End()
 class GameState():
     
     def __init__(self):
-        self.state = 'room5'
+        self.state = 'menu'
         
     def menu(self):
         menu.start_screen()
