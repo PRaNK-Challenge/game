@@ -1,1 +1,1 @@
-# game
+# A click and point game by Nicola McDermott and Katarzyna Polonkiewicz
